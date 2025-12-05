@@ -73,7 +73,7 @@ footer {
   display: none !important;
 }
 
-/* Align biography section to the left */
+/* Center the name (h1) while keeping avatar and other content left-aligned */
 .blox-resume-biography-3 {
   text-align: left !important;
 }
@@ -83,8 +83,16 @@ footer {
   margin-right: auto !important;
 }
 
+/* Center the name */
+.blox-resume-biography-3 h1 {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: 100% !important;
+}
+
+/* Keep other content left-aligned */
 .blox-resume-biography-3 .hbb-biography-content,
-.blox-resume-biography-3 h1,
 .blox-resume-biography-3 .hbb-biography-role,
 .blox-resume-biography-3 .hbb-biography-organizations,
 .blox-resume-biography-3 .hbb-biography-social {

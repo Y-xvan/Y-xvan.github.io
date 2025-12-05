@@ -1,0 +1,228 @@
+<!-- 功德计数器组件 -->
+<div id="muyu-container">
+  <div id="muyu-widget">
+    <div id="merit-counter"><span id="merit-count">0</span></div>
+  </div>
+</div>
+
+<!-- 头像点击区域的弹出文字容器 -->
+<div id="avatar-merit-popup"></div>
+
+<style>
+#muyu-container {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+}
+
+#muyu-widget {
+  position: relative;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 8px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+#muyu-widget:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+}
+
+#merit-counter {
+  font-size: 18px;
+  font-weight: bold;
+  color: #D4AF37;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+#merit-count {
+  color: #FF6B35;
+  font-size: 24px;
+}
+
+/* 头像点击效果 */
+.avatar-wrapper {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 确保名字容器居中 */
+.avatar-wrapper + .space-y-3 {
+  text-align: center;
+  width: 100%;
+}
+
+.avatar-wrapper + .space-y-3 h1 {
+  text-align: center;
+}
+
+.avatar-wrapper:hover {
+  transform: scale(1.05);
+}
+
+.avatar-wrapper:active {
+  animation: avatarKnock 0.3s ease;
+}
+
+@keyframes avatarKnock {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(0.95) rotate(-3deg); }
+  75% { transform: scale(0.95) rotate(3deg); }
+}
+
+/* 头像上的弹出文字容器 */
+#avatar-merit-popup {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+}
+
+.merit-text {
+  position: absolute;
+  font-size: 24px;
+  font-weight: bold;
+  color: #FFD700;
+  text-shadow:
+    0 0 10px rgba(255, 215, 0, 0.8),
+    2px 2px 4px rgba(0, 0, 0, 0.3);
+  animation: floatUp 1.5s ease-out forwards;
+  white-space: nowrap;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-50px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px) scale(0.8);
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  #muyu-container {
+    top: -50px;
+  }
+
+  #muyu-widget {
+    padding: 6px 16px;
+  }
+
+  #merit-counter {
+    font-size: 16px;
+  }
+
+  #merit-count {
+    font-size: 20px;
+  }
+}
+</style>
+
+<script>
+let meritCount = 0;
+const meritPhrases = [
+  '功德+1 ✨',
+  '顶刊预定！🚀',
+  '论文上岸！🎉',
+  '项目到手 💰',
+  '开源大吉 💻',
+  '被夸了！🌷',
+  '实验成功！🧪',
+  '答辩过过过！👍',
+  '奖学金Get！🤑',
+  '交流愉快 🤝',
+  '突破达成！💡',
+  '数据收工 📊',
+  '查重稳了 ✅',
+  '新文发表！📄',
+  '专利到手 ⚖️',
+  '合作愉快 🥳',
+  '发言精彩 🎤',
+  '氛围超好 💯',
+  '导师点赞 😄',
+  '方向明确 🧭'
+];
+
+// 从 localStorage 读取功德值
+if (localStorage.getItem('meritCount')) {
+  meritCount = parseInt(localStorage.getItem('meritCount'));
+  document.getElementById('merit-count').textContent = meritCount;
+}
+
+// 等待 DOM 加载完成后绑定头像点击事件
+document.addEventListener('DOMContentLoaded', function() {
+  const avatar = document.querySelector('.avatar-wrapper');
+
+  if (avatar) {
+    // 将功德计数器移到头像容器中
+    const meritContainer = document.getElementById('muyu-container');
+    avatar.style.position = 'relative';
+    avatar.appendChild(meritContainer);
+
+    // 绑定点击事件
+    avatar.addEventListener('click', function(e) {
+      knockAvatar(e);
+    });
+  }
+});
+
+function knockAvatar(event) {
+  // 增加功德值
+  meritCount++;
+  document.getElementById('merit-count').textContent = meritCount;
+
+  // 保存到 localStorage
+  localStorage.setItem('meritCount', meritCount);
+
+  // 显示随机功德文字（在头像位置）
+  showMeritTextAtAvatar(event);
+}
+
+function showMeritTextAtAvatar(event) {
+  const popup = document.getElementById('avatar-merit-popup');
+  const text = document.createElement('div');
+  text.className = 'merit-text';
+
+  // 随机选择功德语句
+  const phrase = meritPhrases[Math.floor(Math.random() * meritPhrases.length)];
+  text.textContent = phrase;
+
+  // 获取头像的位置
+  const avatar = document.querySelector('.avatar-wrapper');
+  const rect = avatar.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  // 随机偏移位置，避免重叠
+  const randomX = (Math.random() - 0.5) * 100;
+  const randomY = (Math.random() - 0.5) * 60;
+
+  text.style.left = (centerX + randomX) + 'px';
+  text.style.top = (centerY + randomY) + 'px';
+
+  popup.appendChild(text);
+
+  // 1.5秒后移除元素
+  setTimeout(() => {
+    if (popup.contains(text)) {
+      popup.removeChild(text);
+    }
+  }, 1500);
+}
+
+</script>
