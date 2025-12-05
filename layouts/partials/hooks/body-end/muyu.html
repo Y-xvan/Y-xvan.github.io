@@ -1,0 +1,221 @@
+<!-- 电子木鱼组件 -->
+<div id="muyu-container">
+  <div id="muyu-widget">
+    <div id="merit-counter">功德: <span id="merit-count">0</span></div>
+    <div id="muyu-drum" onclick="knockMuyu()">
+      <svg viewBox="0 0 200 200" width="150" height="150">
+        <!-- 木鱼外形 -->
+        <ellipse cx="100" cy="100" rx="80" ry="60" fill="#8B4513" stroke="#654321" stroke-width="3"/>
+        <ellipse cx="100" cy="95" rx="75" ry="55" fill="#A0522D"/>
+        <ellipse cx="100" cy="90" rx="70" ry="50" fill="#CD853F"/>
+        <!-- 木鱼开口 -->
+        <path d="M 40 100 Q 100 130 160 100" fill="#654321" stroke="#4A3319" stroke-width="2"/>
+        <!-- 木鱼纹理 -->
+        <ellipse cx="100" cy="85" rx="50" ry="35" fill="none" stroke="#8B4513" stroke-width="1" opacity="0.5"/>
+        <ellipse cx="100" cy="80" rx="35" ry="25" fill="none" stroke="#8B4513" stroke-width="1" opacity="0.3"/>
+      </svg>
+      <div id="knock-text">敲一下</div>
+    </div>
+    <div id="merit-popup"></div>
+  </div>
+</div>
+
+<style>
+#muyu-container {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 9999;
+}
+
+#muyu-widget {
+  position: relative;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+#muyu-widget:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+}
+
+#merit-counter {
+  font-size: 18px;
+  font-weight: bold;
+  color: #D4AF37;
+  margin-bottom: 15px;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+#merit-count {
+  color: #FF6B35;
+  font-size: 24px;
+}
+
+#muyu-drum {
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  position: relative;
+  display: inline-block;
+}
+
+#muyu-drum:hover {
+  transform: scale(1.05);
+}
+
+#muyu-drum:active {
+  animation: knock 0.3s ease;
+}
+
+#knock-text {
+  font-size: 14px;
+  color: #666;
+  margin-top: 10px;
+  opacity: 0.7;
+}
+
+@keyframes knock {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(0.95) rotate(-5deg); }
+  75% { transform: scale(0.95) rotate(5deg); }
+}
+
+#merit-popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.merit-text {
+  position: absolute;
+  font-size: 24px;
+  font-weight: bold;
+  color: #FFD700;
+  text-shadow:
+    0 0 10px rgba(255, 215, 0, 0.8),
+    2px 2px 4px rgba(0, 0, 0, 0.3);
+  animation: floatUp 1.5s ease-out forwards;
+  white-space: nowrap;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-50px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px) scale(0.8);
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  #muyu-container {
+    bottom: 20px;
+    right: 20px;
+  }
+
+  #muyu-widget {
+    padding: 15px;
+  }
+
+  #muyu-drum svg {
+    width: 120px;
+    height: 120px;
+  }
+
+  #merit-counter {
+    font-size: 16px;
+  }
+
+  #merit-count {
+    font-size: 20px;
+  }
+}
+</style>
+
+<script>
+let meritCount = 0;
+const meritPhrases = [
+  '功德+1',
+  '善哉善哉',
+  '阿弥陀佛',
+  '心诚则灵',
+  '福慧双修',
+  '积善成德',
+  '功德无量'
+];
+
+// 从 localStorage 读取功德值
+if (localStorage.getItem('meritCount')) {
+  meritCount = parseInt(localStorage.getItem('meritCount'));
+  document.getElementById('merit-count').textContent = meritCount;
+}
+
+function knockMuyu() {
+  // 增加功德值
+  meritCount++;
+  document.getElementById('merit-count').textContent = meritCount;
+
+  // 保存到 localStorage
+  localStorage.setItem('meritCount', meritCount);
+
+  // 播放音效（可选，需要添加音频文件）
+  // const audio = new Audio('/sounds/muyu.mp3');
+  // audio.play();
+
+  // 显示随机功德文字
+  showMeritText();
+
+  // 添加敲击动画
+  const drum = document.getElementById('muyu-drum');
+  drum.style.animation = 'none';
+  setTimeout(() => {
+    drum.style.animation = '';
+  }, 10);
+}
+
+function showMeritText() {
+  const popup = document.getElementById('merit-popup');
+  const text = document.createElement('div');
+  text.className = 'merit-text';
+
+  // 随机选择功德语句
+  const phrase = meritPhrases[Math.floor(Math.random() * meritPhrases.length)];
+  text.textContent = phrase;
+
+  // 随机偏移位置，避免重叠
+  const randomX = (Math.random() - 0.5) * 60;
+  const randomY = (Math.random() - 0.5) * 40;
+  text.style.left = randomX + 'px';
+  text.style.top = randomY + 'px';
+
+  popup.appendChild(text);
+
+  // 1.5秒后移除元素
+  setTimeout(() => {
+    popup.removeChild(text);
+  }, 1500);
+}
+
+// 双击重置功德值（隐藏功能）
+document.getElementById('merit-counter').addEventListener('dblclick', function() {
+  if (confirm('确定要重置功德值吗？')) {
+    meritCount = 0;
+    document.getElementById('merit-count').textContent = meritCount;
+    localStorage.setItem('meritCount', meritCount);
+  }
+});
+</script>
