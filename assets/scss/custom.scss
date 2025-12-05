@@ -1,89 +1,71 @@
 /* Fixed Background Image for All Pages */
 html {
-  background: url('/media/background.jpg') no-repeat center center fixed !important;
-  background-size: cover !important;
-  min-height: 100vh !important;
+  background: url('/media/background.jpg') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
 }
 
 body {
-  background: transparent !important;
-  min-height: 100vh !important;
+  background: transparent;
+  min-height: 100vh;
 }
 
-/* Make all major containers transparent to show background */
-body > *,
-#page-wrapper,
-.page-wrapper,
-body > div,
-main,
-article,
-section,
-.home-section,
-.wg-blank,
-.wg-markdown,
-[class*="hb-block-"],
-div[class*="block-"],
+/* Content containers with semi-transparent background for readability */
 .article-container,
-.universal-wrapper,
 .page-body,
-#main {
-  background: transparent !important;
-  background-color: transparent !important;
-}
-
-/* Make markdown blocks semi-transparent with better readability */
-.markdown-block {
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  box-shadow: none;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.prose, .markdown-content, section > div {
-  background-color: rgba(255, 255, 255, 0.85);
+[class*="hb-block-"] .prose,
+.markdown-content {
+  background-color: rgba(255, 255, 255, 0.95);
   padding: 2rem;
   border-radius: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-/* Biography section transparent */
-.blox-resume-biography-3, [class*="resume-biography"], [class*="bg-gradient"], [class*="backdrop-blur"] {
-  background: inherit !important;
+/* Biography section with subtle background */
+.blox-resume-biography-3 {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 /* Dark mode adjustments */
 @media (prefers-color-scheme: dark) {
-  .markdown-block {
+  html {
+    background: url('/media/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+
+  .article-container,
+  .page-body,
+  [class*="hb-block-"] .prose,
+  .markdown-content {
+    background-color: rgba(31, 41, 55, 0.95);
+    color: #f9fafb;
+  }
+
+  .blox-resume-biography-3 {
     background-color: rgba(31, 41, 55, 0.9);
     color: #f9fafb;
   }
 }
 
-html.dark .markdown-block {
-  background-color: rgba(31, 41, 55, 0.9);
+html.dark {
+  background: url('/media/background.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+html.dark .article-container,
+html.dark .page-body,
+html.dark [class*="hb-block-"] .prose,
+html.dark .markdown-content {
+  background-color: rgba(31, 41, 55, 0.95);
   color: #f9fafb;
 }
 
-/* Dark mode - keep background visible */
-html.dark {
-  background: url('/media/background.jpg') no-repeat center center fixed !important;
-  background-size: cover !important;
-}
-
-body.dark {
-  background: transparent !important;
-}
-
-body.dark, html.dark {
-  main, .article-container, .universal-wrapper {
-    background-color: transparent !important;
-  }
-
-  .prose, .markdown-content, section > div {
-    background-color: transparent !important;
-  }
+html.dark .blox-resume-biography-3 {
+  background-color: rgba(31, 41, 55, 0.9);
+  color: #f9fafb;
 }
 
 /* Hide footer */
