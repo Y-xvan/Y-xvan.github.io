@@ -116,3 +116,10 @@ footer {
   flex-direction: column !important;
   align-items: flex-start !important;
 }
+
+/* Hide HugoBlox dev tools HUD */
+#hbx-dev-hud-root {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}

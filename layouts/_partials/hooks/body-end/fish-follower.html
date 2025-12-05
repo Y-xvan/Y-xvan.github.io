@@ -1,0 +1,104 @@
+<!-- 跟随鼠标的小狗组件 -->
+<div id="fish-follower">
+  <div class="dog-sprite"></div>
+</div>
+
+<script>
+(function() {
+  const dog = document.getElementById('fish-follower');
+  const dogSprite = dog.querySelector('.dog-sprite');
+
+  let dogX = -100;
+  let dogY = -100;
+  let targetX = -100;
+  let targetY = -100;
+  let smoothness = 0.1;
+  let lastDx = 0;
+  let lastDy = 0;
+
+  document.addEventListener('mousemove', function(e) {
+    targetX = e.clientX;
+    targetY = e.clientY;
+  });
+
+  function animate() {
+    const dx = targetX - dogX;
+    const dy = targetY - dogY;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    const IDLE_DISTANCE = 30;
+    const WALK_DISTANCE = 150;
+    const RUN_DISTANCE = 400;
+
+    if (distance < IDLE_DISTANCE) {
+      smoothness = 0.01;
+    } else if (distance < WALK_DISTANCE) {
+      smoothness = 0.03;
+    } else if (distance < RUN_DISTANCE) {
+      smoothness = 0.05;
+    } else {
+      smoothness = 0.08;
+    }
+
+    dogX += dx * smoothness;
+    dogY += dy * smoothness;
+
+    dog.style.left = (dogX - 32) + 'px';
+    dog.style.top = (dogY - 32) + 'px';
+
+    if (distance < IDLE_DISTANCE) {
+      dogSprite.classList.remove('running', 'jumping');
+      dogSprite.classList.add('idle');
+    } else if (distance < WALK_DISTANCE) {
+      dogSprite.classList.remove('idle', 'jumping');
+      dogSprite.classList.add('running');
+      dogSprite.style.animationDuration = '0.8s';
+    } else if (distance < RUN_DISTANCE) {
+      dogSprite.classList.remove('idle', 'jumping');
+      dogSprite.classList.add('running');
+      dogSprite.style.animationDuration = '0.5s';
+    } else {
+      dogSprite.classList.remove('idle', 'running');
+      dogSprite.classList.add('jumping');
+    }
+
+    if (distance > 3) {
+      dog.classList.remove('facing-left', 'facing-right', 'facing-up', 'facing-down');
+
+      if (Math.abs(dx) > 2) {
+        if (dx > 0) {
+          dog.classList.add('facing-right');
+        } else {
+          dog.classList.add('facing-left');
+        }
+      } else {
+        if (lastDx > 0) {
+          dog.classList.add('facing-right');
+        } else {
+          dog.classList.add('facing-left');
+        }
+      }
+
+      if (Math.abs(dy) > Math.abs(dx) * 0.4) {
+        if (dy < 0) {
+          dog.classList.add('facing-up');
+        } else if (dy > 0) {
+          dog.classList.add('facing-down');
+        }
+      }
+
+      lastDx = dx;
+      lastDy = dy;
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  window.addEventListener('load', function() {
+    dogX = window.innerWidth / 2;
+    dogY = window.innerHeight / 2;
+  });
+})();
+</script>

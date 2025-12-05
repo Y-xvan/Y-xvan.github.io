@@ -274,8 +274,8 @@ hugoblox:
     enable: false
     hud:
       position: bottom-left             # top-left | top-right | bottom-left | bottom-right
-      opacity: 1.0
-    export_logs: true
+      opacity: 0.0
+    export_logs: false
 
   # ────────────────────────────────────────────────────────────────────────────
   # PRO
