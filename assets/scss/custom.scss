@@ -1,0 +1,61 @@
+/* Fixed Background Image for All Pages */
+body,
+html {
+  background-image: url('/media/background.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Remove any default backgrounds from sections and footer */
+section,
+.home-section,
+.wg-blank,
+.wg-markdown,
+[class*="hb-block-"],
+div[class*="block-"] {
+  background: transparent !important;
+}
+
+/* Hide footer completely */
+footer,
+.site-footer,
+#footer,
+[id*="footer"],
+[class*="footer"] {
+  display: none !important;
+}
+
+/* Make main content areas semi-transparent so background shows through */
+.article-container,
+.universal-wrapper,
+main {
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+/* Add semi-transparent background to content blocks for readability */
+.prose,
+.markdown-content,
+section > div {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 1rem;
+}
+
+/* Dark mode adjustments */
+body.dark,
+html.dark {
+  main,
+  .article-container,
+  .universal-wrapper {
+    background-color: rgba(17, 24, 39, 0.95);
+  }
+
+  .prose,
+  .markdown-content,
+  section > div {
+    background-color: rgba(17, 24, 39, 0.9);
+  }
+}
