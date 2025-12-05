@@ -13,7 +13,7 @@ hugoblox:
   # ────────────────────────────────────────────────────────────────────────────
   identity:
     # Site name - shown in navbar, footer, copyright, and browser title by default
-    name: "余志轩"
+    name: "HOME"
     # Legal entity for copyright notices (defaults to name if not set)
     organization: ""
     # Schema.org type for structured data
@@ -62,7 +62,7 @@ hugoblox:
     # Font: 'sans' (Inter), 'serif' (Roboto Slab), or 'native' (system fonts)
     font: "sans"
     # Size: 'sm', 'md', 'lg', or 'xl' (affects base font size and scale)
-    size: "sm"
+    size: "lg"
 
   # ────────────────────────────────────────────────────────────────────────────
   # LAYOUT
@@ -72,7 +72,7 @@ hugoblox:
     # Border radius: 'none', 'sm', 'md', 'lg', or 'full'
     radius: "full"
     # Spacing density: 'compact', 'comfortable', or 'spacious'
-    spacing: "comfortable"
+    spacing: "spacious"
     # Avatar shape in author profiles
     avatar_shape: circle                # circle | square | rounded
 
@@ -89,9 +89,9 @@ hugoblox:
     # Menu alignment
     align: center                       # left | center | right
     # Feature toggles
-    search: true
-    theme_toggle: true
-    theme_picker: true
+    search: false
+    theme_toggle: false
+    theme_picker: false
     language_switcher: true
     # Call-to-action button
     cta:

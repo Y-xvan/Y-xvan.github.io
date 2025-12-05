@@ -6,9 +6,34 @@ type: landing
 
 design:
   # Default section spacing
-  spacing: '6rem'
+  spacing: '8rem'
 
 sections:
+  - block: markdown
+    content:
+      text: |
+        <style>
+        html {
+          background: url('/media/background.jpg') no-repeat center center fixed !important;
+          background-size: cover !important;
+          min-height: 100vh !important;
+        }
+        body {
+          background: transparent !important;
+        }
+        body > *, #page-wrapper, .page-wrapper, body > div, main, article, section, .home-section, .wg-blank, .wg-markdown, [class*="hb-block-"], div[class*="block-"], .article-container, .universal-wrapper, .page-body, #main {
+          background: transparent !important;
+          background-color: transparent !important;
+        }
+        html.dark {
+          background: url('/media/background.jpg') no-repeat center center fixed !important;
+          background-size: cover !important;
+        }
+        body.dark { background: transparent !important; }
+        </style>
+    design:
+      columns: '1'
+      css_class: 'd-none'
   - block: resume-biography-3
     content:
       username: admin
@@ -19,22 +44,26 @@ sections:
         interests: ''
     design:
       avatar:
-        size: medium
+        size: large
         shape: circle
-      background:
-        image:
-          filename: background.jpg
   - block: markdown
     content:
       title: 'My Research'
       subtitle: ''
       text: |-
-        I am interested in Graph Learning, Computer Vision, Large Language Models, and Reinforcement Learning.
-
         Feel free to reach out for collaboration opportunities!
     design:
       columns: '1'
-      background:
-        image:
-          filename: background.jpg
+  - block: collection
+    id: papers
+    content:
+      title: Papers
+      subtitle: ''
+      text: ''
+      filters:
+        folders:
+          - papers
+        exclude_featured: false
+    design:
+      columns: '1'
 ---

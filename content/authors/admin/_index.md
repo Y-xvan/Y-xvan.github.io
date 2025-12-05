@@ -12,7 +12,7 @@ last_name: Yu
 
 # Status emoji
 status:
-  icon: 🚀
+  icon: 
 
 # Is this the primary user of the site?
 superuser: true
@@ -32,12 +32,13 @@ organizations:
 # Need to use another icon? Simply download the SVG icon to your `assets/media/icons/` folder.
 profiles:
   - icon: at-symbol
-    url: '124090828@link.cuhk.edu.cn'
-    label: E-mail Me
+    url: ''
+    label: 124090828@link.cuhk.edu.cn
 
 
   - icon: brands/github
     url: https://github.com/Y-xvan
+    label: GitHub Page
 
 
 interests:
