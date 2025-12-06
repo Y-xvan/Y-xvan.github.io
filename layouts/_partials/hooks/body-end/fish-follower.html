@@ -3,10 +3,67 @@
   <div class="dog-sprite"></div>
 </div>
 
+<!-- 狗狗状态菜单 -->
+<div id="dog-status-menu">
+  <button class="close-btn" onclick="closeDogMenu()">×</button>
+  <h3>🐕 Menu</h3>
+
+  <div class="status-item">
+    <div class="status-icon">😊</div>
+    <div class="status-content">
+      <div class="status-label">Mood</div>
+      <div class="status-bar">
+        <div class="status-bar-fill mood" id="mood-bar"></div>
+        <div class="status-value" id="mood-value">100%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="status-item">
+    <div class="status-icon">❤️</div>
+    <div class="status-content">
+      <div class="status-label">Health</div>
+      <div class="status-bar">
+        <div class="status-bar-fill health" id="health-bar"></div>
+        <div class="status-value" id="health-value">100%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="status-item">
+    <div class="status-icon">⚡</div>
+    <div class="status-content">
+      <div class="status-label">Energy</div>
+      <div class="status-bar">
+        <div class="status-bar-fill energy" id="energy-bar"></div>
+        <div class="status-value" id="energy-value">100%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="status-item">
+    <div class="status-icon">🍖</div>
+    <div class="status-content">
+      <div class="status-label">Hunger</div>
+      <div class="status-bar">
+        <div class="status-bar-fill hunger" id="hunger-bar"></div>
+        <div class="status-value" id="hunger-value">100%</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
+// 关闭菜单的全局函数
+function closeDogMenu() {
+  const menu = document.getElementById('dog-status-menu');
+  menu.classList.remove('show');
+}
+
 (function() {
   const dog = document.getElementById('fish-follower');
   const dogSprite = dog.querySelector('.dog-sprite');
+  const statusMenu = document.getElementById('dog-status-menu');
 
   let dogX = -100;
   let dogY = -100;
@@ -15,6 +72,14 @@
   let smoothness = 0.1;
   let lastDx = 0;
   let lastDy = 0;
+
+  // 狗狗状态数据
+  let dogStatus = {
+    mood: 100,
+    health: 100,
+    energy: 100,
+    hunger: 100
+  };
 
   document.addEventListener('mousemove', function(e) {
     targetX = e.clientX;
@@ -31,13 +96,13 @@
     const RUN_DISTANCE = 400;
 
     if (distance < IDLE_DISTANCE) {
-      smoothness = 0.01;
+      smoothness = 0.003;
     } else if (distance < WALK_DISTANCE) {
-      smoothness = 0.03;
+      smoothness = 0.008;
     } else if (distance < RUN_DISTANCE) {
-      smoothness = 0.05;
+      smoothness = 0.015;
     } else {
-      smoothness = 0.08;
+      smoothness = 0.025;
     }
 
     dogX += dx * smoothness;
@@ -99,6 +164,108 @@
   window.addEventListener('load', function() {
     dogX = window.innerWidth / 2;
     dogY = window.innerHeight / 2;
+  });
+
+  // 更新状态显示
+  function updateStatusDisplay() {
+    document.getElementById('mood-bar').style.width = dogStatus.mood + '%';
+    document.getElementById('mood-value').textContent = Math.round(dogStatus.mood) + '%';
+
+    document.getElementById('health-bar').style.width = dogStatus.health + '%';
+    document.getElementById('health-value').textContent = Math.round(dogStatus.health) + '%';
+
+    document.getElementById('energy-bar').style.width = dogStatus.energy + '%';
+    document.getElementById('energy-value').textContent = Math.round(dogStatus.energy) + '%';
+
+    document.getElementById('hunger-bar').style.width = dogStatus.hunger + '%';
+    document.getElementById('hunger-value').textContent = Math.round(dogStatus.hunger) + '%';
+  }
+
+  // 点击狗狗显示状态菜单并增加心情和饱腹度（互动喂食）
+  dogSprite.addEventListener('click', function(e) {
+    e.stopPropagation();
+
+    // 增加心情和饱腹度
+    dogStatus.mood = Math.min(100, dogStatus.mood + 5);
+    dogStatus.hunger = Math.min(100, dogStatus.hunger + 3);
+
+    // 切换菜单显示
+    if (statusMenu.classList.contains('show')) {
+      statusMenu.classList.remove('show');
+    } else {
+      // 计算菜单位置（在狗狗旁边）
+      const menuWidth = 280;
+      const menuHeight = 300;
+      let menuX = dogX + 40;
+      let menuY = dogY - 150;
+
+      // 确保菜单不超出屏幕
+      if (menuX + menuWidth > window.innerWidth) {
+        menuX = dogX - menuWidth - 40;
+      }
+      if (menuY < 10) {
+        menuY = 10;
+      }
+      if (menuY + menuHeight > window.innerHeight) {
+        menuY = window.innerHeight - menuHeight - 10;
+      }
+
+      statusMenu.style.left = menuX + 'px';
+      statusMenu.style.top = menuY + 'px';
+
+      // 更新显示并显示菜单
+      updateStatusDisplay();
+      statusMenu.classList.add('show');
+    }
+  });
+
+  // 点击其他地方关闭菜单
+  document.addEventListener('click', function(e) {
+    if (!statusMenu.contains(e.target) && e.target !== dogSprite) {
+      statusMenu.classList.remove('show');
+    }
+  });
+
+  // 状态随时间自然变化（每秒更新一次）
+  setInterval(function() {
+    // 能量缓慢下降
+    dogStatus.energy = Math.max(0, dogStatus.energy - 0.05);
+
+    // 饱腹度缓慢下降
+    dogStatus.hunger = Math.max(0, dogStatus.hunger - 0.03);
+
+    // 根据饱腹度和能量影响心情
+    if (dogStatus.hunger < 30 || dogStatus.energy < 30) {
+      dogStatus.mood = Math.max(0, dogStatus.mood - 0.1);
+    } else if (dogStatus.hunger > 70 && dogStatus.energy > 70) {
+      dogStatus.mood = Math.min(100, dogStatus.mood + 0.2);
+    }
+
+    // 根据心情影响健康
+    if (dogStatus.mood < 50) {
+      dogStatus.health = Math.max(0, dogStatus.health - 0.02);
+    } else if (dogStatus.mood > 80) {
+      dogStatus.health = Math.min(100, dogStatus.health + 0.05);
+    }
+
+    // 如果菜单打开，实时更新显示
+    if (statusMenu.classList.contains('show')) {
+      updateStatusDisplay();
+    }
+  }, 1000);
+
+  // 鼠标移动增加能量（追逐游戏）
+  let lastMoveTime = Date.now();
+  document.addEventListener('mousemove', function() {
+    const now = Date.now();
+    if (now - lastMoveTime > 100) {
+      // 每次移动鼠标，如果狗狗在追逐，恢复少量能量
+      const distance = Math.sqrt(Math.pow(targetX - dogX, 2) + Math.pow(targetY - dogY, 2));
+      if (distance > 50) {
+        dogStatus.energy = Math.min(100, dogStatus.energy + 0.01);
+      }
+      lastMoveTime = now;
+    }
   });
 })();
 </script>

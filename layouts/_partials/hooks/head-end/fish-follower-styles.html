@@ -19,6 +19,11 @@ a, button, [role="button"] {
   top: -100px;
 }
 
+#fish-follower .dog-sprite {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
 /* OpenGameArt开源小狗Sprite - Dog Spritesheets by OpenGameArt */
 .dog-sprite {
   width: 64px;
@@ -98,6 +103,147 @@ a, button, [role="button"] {
   @keyframes dogJump {
     0% { background-position: 0 -96px; }
     100% { background-position: -288px -96px; }
+  }
+}
+
+/* 狗狗状态菜单样式 */
+#dog-status-menu {
+  position: fixed;
+  background: linear-gradient(135deg, #fff9e6 0%, #ffe4c4 100%);
+  border: 3px solid #8b6f47;
+  border-radius: 15px;
+  padding: 20px;
+  min-width: 280px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  pointer-events: auto;
+  display: none;
+  font-family: 'Arial', sans-serif;
+}
+
+#dog-status-menu.show {
+  display: block;
+  animation: menuPopIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes menuPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+#dog-status-menu h3 {
+  margin: 0 0 15px 0;
+  color: #5c4033;
+  font-size: 20px;
+  text-align: center;
+  border-bottom: 2px solid #8b6f47;
+  padding-bottom: 10px;
+}
+
+.status-item {
+  margin: 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-icon {
+  font-size: 24px;
+  min-width: 30px;
+  text-align: center;
+}
+
+.status-content {
+  flex: 1;
+}
+
+.status-label {
+  font-size: 14px;
+  color: #5c4033;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.status-bar {
+  background: #d4a574;
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid #8b6f47;
+  position: relative;
+}
+
+.status-bar-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+  border-radius: 8px;
+}
+
+.status-bar-fill.mood {
+  background: linear-gradient(90deg, #ff6b9d 0%, #ffa07a 100%);
+}
+
+.status-bar-fill.health {
+  background: linear-gradient(90deg, #98fb98 0%, #32cd32 100%);
+}
+
+.status-bar-fill.energy {
+  background: linear-gradient(90deg, #87ceeb 0%, #4682b4 100%);
+}
+
+.status-bar-fill.hunger {
+  background: linear-gradient(90deg, #ffd700 0%, #ff8c00 100%);
+}
+
+.status-value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #8b6f47;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer !important;
+  font-size: 16px;
+  line-height: 1;
+  transition: background 0.2s;
+}
+
+.close-btn:hover {
+  background: #5c4033;
+}
+
+@media (max-width: 768px) {
+  #dog-status-menu {
+    min-width: 240px;
+    padding: 15px;
+  }
+
+  #dog-status-menu h3 {
+    font-size: 18px;
+  }
+
+  .status-icon {
+    font-size: 20px;
   }
 }
 </style>
