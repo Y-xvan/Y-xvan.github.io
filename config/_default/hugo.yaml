@@ -23,6 +23,13 @@ removePathAccents: true
 
 build:
   writeStats: true
+  # Enable cache busting for assets with fingerprinting
+  buildStats:
+    enable: true
+  # Use resource cache only as fallback to ensure fresh builds
+  useResourceCacheWhen: fallback
+  # Enable asset fingerprinting for cache busting
+  noJSConfigInAssets: false
 enableGitInfo: false
 summaryLength: 30
 pagination:
@@ -52,6 +59,36 @@ markup:
       unsafe: true
   highlight:
     lineNos: false
+# Minify output for better performance and cache busting
+minify:
+  disableCSS: false
+  disableHTML: false
+  disableJS: false
+  disableJSON: false
+  disableSVG: false
+  disableXML: false
+  minifyOutput: true
+  tdewolff:
+    css:
+      keepCSS2: true
+      precision: 0
+    html:
+      keepComments: false
+      keepConditionalComments: true
+      keepDefaultAttrVals: true
+      keepDocumentTags: true
+      keepEndTags: true
+      keepQuotes: false
+      keepWhitespace: false
+    js:
+      keepVarNames: false
+      precision: 0
+    json:
+      precision: 0
+    svg:
+      precision: 0
+    xml:
+      keepWhitespace: false
 security:
   _merge: deep
 sitemap:

@@ -1,0 +1,10 @@
+{{ $js := resources.Get "js/interests-links.js" }}
+{{ if $js }}
+  {{ $secureJS := $js | resources.Minify }}
+  <script src="{{ $secureJS.RelPermalink }}" defer></script>
+{{ else }}
+  <!-- interests-links.js not found -->
+  <script>
+    console.error('interests-links.js could not be loaded');
+  </script>
+{{ end }}

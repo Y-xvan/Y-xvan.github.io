@@ -21,18 +21,18 @@ superuser: true
 highlight_name: true
 
 # Role/position/tagline
-role: The Chinese University of Hong Kong, Shen Zhen
+role: '[The Chinese University of Hong Kong, Shen Zhen](https://www.cuhk.edu.cn)'
 
 # Organizations/Affiliations to display in Biography blox
 organizations:
-  - name: 
+  - name:
     url: 
 
 # Social network links
 # Need to use another icon? Simply download the SVG icon to your `assets/media/icons/` folder.
 profiles:
   - icon: at-symbol
-    url: ''
+    url: 'mailto:124090828@link.cuhk.edu.cn'
     label: 124090828@link.cuhk.edu.cn
 
 

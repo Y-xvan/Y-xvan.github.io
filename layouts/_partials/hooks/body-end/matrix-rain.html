@@ -1,0 +1,322 @@
+<!-- Matrix 代码雨背景 -->
+<canvas id="matrix-rain"></canvas>
+
+<!-- 控制按钮 -->
+<div id="matrix-toggle" title="切换代码雨效果">
+  <span class="matrix-icon">{ }</span>
+</div>
+
+<style>
+#matrix-rain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+#matrix-rain.active {
+  opacity: 1;
+}
+
+#matrix-toggle {
+  position: fixed;
+  bottom: 180px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #0f0 0%, #0a0 100%);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
+  transition: all 0.3s ease;
+  z-index: 999;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#matrix-toggle:hover {
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 255, 0, 0.5);
+}
+
+#matrix-toggle:active {
+  transform: translateY(-1px) scale(1.05);
+}
+
+#matrix-toggle.active {
+  background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+  box-shadow: 0 4px 20px rgba(0, 255, 0, 0.6);
+}
+
+.matrix-icon {
+  color: #000;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+}
+
+/* 代码雨激活时的页面样式 */
+body.matrix-active {
+  color: #e0e0e0 !important;
+}
+
+body.matrix-active h1,
+body.matrix-active h2,
+body.matrix-active h3,
+body.matrix-active h4,
+body.matrix-active h5,
+body.matrix-active h6 {
+  color: #f0f0f0 !important;
+}
+
+body.matrix-active p,
+body.matrix-active span,
+body.matrix-active div,
+body.matrix-active a {
+  color: #e0e0e0 !important;
+}
+
+body.matrix-active a:hover {
+  color: #ffffff !important;
+}
+
+/* 在代码雨模式下保持深色的特殊元素 */
+body.matrix-active .hbb-interests span,
+body.matrix-active .hbb-interests ul li,
+body.matrix-active .interests span,
+body.matrix-active .interests ul li {
+  color: #000000 !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+}
+
+body.matrix-active #merit-count {
+  color: #FF6B35 !important;
+}
+
+body.matrix-active #merit-counter {
+  color: #D4AF37 !important;
+}
+
+body.matrix-active #muyu-widget {
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  #matrix-toggle {
+    bottom: 160px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+  }
+
+  .matrix-icon {
+    font-size: 18px;
+  }
+}
+</style>
+
+<script>
+(function() {
+  const canvas = document.getElementById('matrix-rain');
+  const ctx = canvas.getContext('2d');
+  const toggleButton = document.getElementById('matrix-toggle');
+
+  // 设置 canvas 尺寸
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  // 字符集 - 包含编程相关和研究领域关键词
+  const matrixChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-={}[]|:;<>?,./';
+  const keywords = [
+    'PyTorch', 'TensorFlow', 'Graph', 'Neural', 'Deep',
+    'Learn', 'Model', 'Train', 'Test', 'Data',
+    'AI', 'ML', 'DL', 'CV', 'NLP', 'RL',
+    'GNN', 'CNN', 'RNN', 'LSTM', 'Transformer',
+    'Attention', 'Encoder', 'Decoder', 'Layer',
+    'Loss', 'Grad', 'Optim', 'Batch', 'Epoch',
+    'Python', 'Code', 'Debug', 'GPU', 'CUDA'
+  ];
+
+  // 列的配置
+  const fontSize = 14;
+  const columns = Math.floor(canvas.width / fontSize);
+  const drops = [];
+  const speeds = [];
+  const chars = [];
+
+  // 初始化每一列
+  for (let i = 0; i < columns; i++) {
+    drops[i] = Math.random() * -100;
+    speeds[i] = 0.3 + Math.random() * 0.7; // 随机速度
+    chars[i] = [];
+  }
+
+  // 鼠标位置
+  let mouseX = -1000;
+  let mouseY = -1000;
+
+  canvas.addEventListener('mousemove', function(e) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  canvas.addEventListener('mouseleave', function() {
+    mouseX = -1000;
+    mouseY = -1000;
+  });
+
+  // 获取随机字符
+  function getRandomChar(isKeyword = false) {
+    if (isKeyword && Math.random() < 0.3) {
+      return keywords[Math.floor(Math.random() * keywords.length)];
+    }
+    return matrixChars[Math.floor(Math.random() * matrixChars.length)];
+  }
+
+  // 绘制函数
+  function draw() {
+    // 半透明黑色背景，产生拖尾效果
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.font = fontSize + 'px monospace';
+
+    for (let i = 0; i < drops.length; i++) {
+      const x = i * fontSize;
+      const y = drops[i] * fontSize;
+
+      // 计算与鼠标的距离
+      const distanceToMouse = Math.sqrt(
+        Math.pow(x - mouseX, 2) + Math.pow(y - mouseY, 2)
+      );
+
+      let color = '#0f0'; // 默认绿色
+      let currentSpeed = speeds[i];
+
+      // 鼠标交互效果
+      if (distanceToMouse < 100) {
+        // 靠近鼠标时变成亮绿色并加速
+        const intensity = 1 - (distanceToMouse / 100);
+        color = `rgb(${Math.floor(intensity * 100)}, 255, ${Math.floor(intensity * 100)})`;
+        currentSpeed *= (1 + intensity);
+      } else if (distanceToMouse < 200) {
+        // 中等距离时微微发光
+        const intensity = 1 - (distanceToMouse / 200);
+        color = `rgba(0, 255, 0, ${0.7 + intensity * 0.3})`;
+      }
+
+      // 随机显示关键词或普通字符
+      const isKeywordPos = drops[i] % 10 === 0;
+      const char = getRandomChar(isKeywordPos);
+
+      // 绘制字符
+      ctx.fillStyle = color;
+      ctx.fillText(char, x, y);
+
+      // 头部字符更亮
+      if (drops[i] * fontSize > fontSize) {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.fillText(char, x, y);
+      }
+
+      // 更新下落位置
+      drops[i] += currentSpeed;
+
+      // 重置条件：到达底部或随机重置
+      if (y > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+        speeds[i] = 0.3 + Math.random() * 0.7;
+      }
+    }
+  }
+
+  // 动画循环
+  let animationId;
+  let isActive = false;
+
+  function animate() {
+    draw();
+    animationId = requestAnimationFrame(animate);
+  }
+
+  // 切换效果
+  function toggleMatrix() {
+    isActive = !isActive;
+
+    if (isActive) {
+      canvas.classList.add('active');
+      toggleButton.classList.add('active');
+      document.body.classList.add('matrix-active');
+      canvas.style.pointerEvents = 'auto';
+      animate();
+      localStorage.setItem('matrixRainActive', 'true');
+    } else {
+      canvas.classList.remove('active');
+      toggleButton.classList.remove('active');
+      document.body.classList.remove('matrix-active');
+      canvas.style.pointerEvents = 'none';
+      cancelAnimationFrame(animationId);
+      localStorage.setItem('matrixRainActive', 'false');
+    }
+  }
+
+  // 按钮点击事件
+  toggleButton.addEventListener('click', toggleMatrix);
+
+  // 恢复上次的状态
+  if (localStorage.getItem('matrixRainActive') === 'true') {
+    toggleMatrix();
+  }
+
+  // 窗口大小改变时重新初始化
+  let resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      resizeCanvas();
+      // 重新计算列数
+      const newColumns = Math.floor(canvas.width / fontSize);
+      if (newColumns !== drops.length) {
+        drops.length = newColumns;
+        speeds.length = newColumns;
+        for (let i = 0; i < newColumns; i++) {
+          if (drops[i] === undefined) {
+            drops[i] = Math.random() * -100;
+            speeds[i] = 0.3 + Math.random() * 0.7;
+          }
+        }
+      }
+    }, 250);
+  });
+
+  // 键盘快捷键 (Ctrl+M 或 Cmd+M 切换，ESC 退出)
+  document.addEventListener('keydown', function(e) {
+    // Ctrl+M 或 Cmd+M 切换代码雨
+    if ((e.ctrlKey || e.metaKey) && e.key === 'm') {
+      e.preventDefault();
+      toggleMatrix();
+    }
+    // ESC 键退出代码雨
+    else if (e.key === 'Escape' && isActive) {
+      e.preventDefault();
+      toggleMatrix();
+    }
+  });
+})();
+</script>

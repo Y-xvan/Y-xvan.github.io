@@ -1,5 +1,8 @@
+<!-- 狗窝圆圈按钮 -->
+<div id="dog-house-button">Release</div>
+
 <!-- 跟随鼠标的小狗组件 -->
-<div id="fish-follower">
+<div id="fish-follower" style="display: none;">
   <div class="dog-sprite"></div>
 </div>
 
@@ -64,6 +67,7 @@ function closeDogMenu() {
   const dog = document.getElementById('fish-follower');
   const dogSprite = dog.querySelector('.dog-sprite');
   const statusMenu = document.getElementById('dog-status-menu');
+  const dogHouseButton = document.getElementById('dog-house-button');
 
   let dogX = -100;
   let dogY = -100;
@@ -72,6 +76,7 @@ function closeDogMenu() {
   let smoothness = 0.1;
   let lastDx = 0;
   let lastDy = 0;
+  let isDogOut = false; // 记录小狗是否在外面
 
   // 狗狗状态数据
   let dogStatus = {
@@ -164,6 +169,39 @@ function closeDogMenu() {
   window.addEventListener('load', function() {
     dogX = window.innerWidth / 2;
     dogY = window.innerHeight / 2;
+  });
+
+  // 狗窝按钮点击事件 - 切换小狗显示/隐藏
+  dogHouseButton.addEventListener('click', function(e) {
+    e.stopPropagation();
+
+    if (isDogOut) {
+      // 收回小狗
+      isDogOut = false;
+      dog.style.display = 'none';
+      dogHouseButton.classList.remove('has-dog');
+      dogHouseButton.textContent = 'Release';
+
+      // 关闭状态菜单
+      statusMenu.classList.remove('show');
+    } else {
+      // 放出小狗
+      isDogOut = true;
+      dog.style.display = 'block';
+      dogHouseButton.classList.add('has-dog');
+      dogHouseButton.textContent = 'Recall';
+
+      // 获取狗窝按钮的位置作为小狗的初始位置
+      const buttonRect = dogHouseButton.getBoundingClientRect();
+      dogX = buttonRect.left + buttonRect.width / 2;
+      dogY = buttonRect.top + buttonRect.height / 2;
+      targetX = dogX;
+      targetY = dogY;
+
+      // 立即更新小狗位置
+      dog.style.left = (dogX - 32) + 'px';
+      dog.style.top = (dogY - 32) + 'px';
+    }
   });
 
   // 更新状态显示

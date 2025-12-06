@@ -1,0 +1,506 @@
+<!-- Research Inspiration Gacha Machine -->
+<div id="gacha-button">🎰 Gacha</div>
+
+<div id="gacha-modal" class="gacha-modal">
+  <div class="gacha-content">
+    <button class="gacha-close" onclick="closeGacha()">×</button>
+    <h2>🌟 Research Inspiration Gacha 🌟</h2>
+    <p class="gacha-hint">Click to get random research inspiration combinations!</p>
+
+    <div id="gacha-card-container">
+      <div class="gacha-card" id="gacha-card">
+        <div class="card-inner">
+          <div class="card-front">
+            <div class="card-question">?</div>
+          </div>
+          <div class="card-back">
+            <div class="card-rarity" id="card-rarity">Common</div>
+            <div class="card-title" id="card-title">Research Direction</div>
+            <div class="card-combo" id="card-combo">
+              <div class="combo-item" id="combo-1"></div>
+              <div class="combo-separator">×</div>
+              <div class="combo-item" id="combo-2"></div>
+            </div>
+            <div class="card-description" id="card-description">This combination might lead to interesting research!</div>
+            <div class="card-footer">
+              <span id="card-date"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button id="draw-button" onclick="drawCard()">
+      <span class="button-text">Draw Card</span>
+      <span class="button-shine"></span>
+    </button>
+  </div>
+</div>
+
+<style>
+#gacha-button {
+  position: fixed;
+  bottom: 120px;
+  right: 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+  z-index: 999;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#gacha-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+#gacha-button:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+.gacha-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+}
+
+.gacha-modal.show {
+  display: flex;
+  animation: fadeIn 0.3s ease;
+}
+
+.gacha-content {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  padding: 40px;
+  border-radius: 20px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.gacha-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 30px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  line-height: 1;
+}
+
+.gacha-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.gacha-content h2 {
+  margin: 0 0 10px 0;
+  font-size: 28px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.gacha-hint {
+  margin: 0 0 30px 0;
+  opacity: 0.9;
+  font-size: 14px;
+}
+
+#gacha-card-container {
+  perspective: 1000px;
+  margin: 30px 0;
+  min-height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gacha-card {
+  width: 280px;
+  height: 400px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.gacha-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.card-front, .card-back {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.card-front {
+  background: linear-gradient(135deg, #434343 0%, #000000 100%);
+  border: 3px solid #FFD700;
+}
+
+.card-question {
+  font-size: 120px;
+  color: #FFD700;
+  text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.card-back {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  transform: rotateY(180deg);
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  justify-content: space-between;
+}
+
+.card-back.common {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  border-color: #95d5cc;
+}
+
+.card-back.rare {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: #9d7ede;
+}
+
+.card-back.epic {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border-color: #ff6b9d;
+}
+
+.card-back.legendary {
+  background: linear-gradient(135deg, #FFD700 0%, #ff8c00 100%);
+  border-color: #fff;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+  animation: legendaryGlow 2s ease-in-out infinite;
+}
+
+.card-rarity {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 5px 15px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.card-combo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+  flex: 1;
+  justify-content: center;
+}
+
+.combo-item {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 15px;
+  width: 100%;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.combo-separator {
+  font-size: 24px;
+  font-weight: bold;
+  opacity: 0.7;
+}
+
+.card-description {
+  font-size: 12px;
+  opacity: 0.9;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.card-footer {
+  font-size: 11px;
+  opacity: 0.7;
+  margin-top: 10px;
+}
+
+#draw-button {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(245, 87, 108, 0.4);
+}
+
+#draw-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 25px rgba(245, 87, 108, 0.6);
+}
+
+#draw-button:active {
+  transform: translateY(0);
+}
+
+#draw-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button-shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+#draw-button:hover .button-shine {
+  left: 100%;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+@keyframes legendaryGlow {
+  0%, 100% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.6); }
+  50% { box-shadow: 0 0 50px rgba(255, 215, 0, 1); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  #gacha-button {
+    bottom: 100px;
+    right: 20px;
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .gacha-content {
+    padding: 30px 20px;
+  }
+
+  .gacha-card {
+    width: 240px;
+    height: 340px;
+  }
+}
+</style>
+
+<script>
+function closeGacha() {
+  document.getElementById('gacha-modal').classList.remove('show');
+}
+
+(function() {
+  const gachaButton = document.getElementById('gacha-button');
+  const gachaModal = document.getElementById('gacha-modal');
+
+  // Research areas and technique pools
+  const researchAreas = [
+    'Graph Learning',
+    'Computer Vision',
+    'Large Language Models',
+    'Reinforcement Learning',
+    'Natural Language Processing',
+    'Transfer Learning',
+    'Meta Learning',
+    'Federated Learning',
+    'Multimodal Learning',
+    'Continual Learning'
+  ];
+
+  const techniques = [
+    'Zero-shot Learning',
+    'Few-shot Learning',
+    'Self-supervised Learning',
+    'Attention Mechanism',
+    'Transformer',
+    'Diffusion Models',
+    'GANs',
+    'Contrastive Learning',
+    'Prompt Engineering',
+    'Neural Architecture Search',
+    'Knowledge Distillation',
+    'Adversarial Training',
+    'Multi-task Learning',
+    'Causal Inference'
+  ];
+
+  const applications = [
+    'Image Generation',
+    'Object Detection',
+    'Text-to-Image',
+    'Question Answering',
+    'Recommendation Systems',
+    'Anomaly Detection',
+    'Scene Understanding',
+    'Code Generation',
+    'Drug Discovery',
+    'Autonomous Driving',
+    'Speech Recognition',
+    'Video Understanding'
+  ];
+
+  const descriptions = [
+    'This combination might open new research directions!',
+    'Sounds like a promising research approach!',
+    'This idea is worth exploring deeply!',
+    'Could potentially lead to top-tier publications!',
+    'This combination is full of possibilities!',
+    'An exciting research direction!',
+    'This could be the next hot topic!',
+    'A very creative research idea!',
+    'Worth adding to your research plan!',
+    'This direction has great potential!'
+  ];
+
+  // Open gacha interface
+  gachaButton.addEventListener('click', function() {
+    gachaModal.classList.add('show');
+  });
+
+  // Click background to close
+  gachaModal.addEventListener('click', function(e) {
+    if (e.target === gachaModal) {
+      closeGacha();
+    }
+  });
+
+  // Draw card function
+  window.drawCard = function() {
+    const card = document.getElementById('gacha-card');
+    const drawButton = document.getElementById('draw-button');
+
+    // Reset card
+    if (card.classList.contains('flipped')) {
+      card.classList.remove('flipped');
+      setTimeout(() => performDraw(), 300);
+    } else {
+      performDraw();
+    }
+
+    function performDraw() {
+      drawButton.disabled = true;
+
+      // Determine rarity (Common 40%, Rare 30%, Epic 20%, Legendary 10%)
+      const rand = Math.random() * 100;
+      let rarity, rarityText;
+
+      if (rand < 40) {
+        rarity = 'common';
+        rarityText = 'Common';
+      } else if (rand < 70) {
+        rarity = 'rare';
+        rarityText = 'Rare';
+      } else if (rand < 90) {
+        rarity = 'epic';
+        rarityText = 'Epic';
+      } else {
+        rarity = 'legendary';
+        rarityText = 'Legendary';
+      }
+
+      // Randomly select combination content
+      let pool1, pool2, titleText;
+      const comboType = Math.random();
+
+      if (comboType < 0.5) {
+        // Research Area × Technique
+        pool1 = researchAreas;
+        pool2 = techniques;
+        titleText = 'Research × Technique';
+      } else {
+        // Technique × Application
+        pool1 = techniques;
+        pool2 = applications;
+        titleText = 'Technique × Application';
+      }
+
+      const item1 = pool1[Math.floor(Math.random() * pool1.length)];
+      const item2 = pool2[Math.floor(Math.random() * pool2.length)];
+      const description = descriptions[Math.floor(Math.random() * descriptions.length)];
+
+      // Update card content
+      document.getElementById('card-rarity').textContent = rarityText;
+      document.getElementById('card-title').textContent = titleText;
+      document.getElementById('combo-1').textContent = item1;
+      document.getElementById('combo-2').textContent = item2;
+      document.getElementById('card-description').textContent = description;
+      document.getElementById('card-date').textContent = new Date().toLocaleDateString('en-US');
+
+      // Apply rarity style
+      const cardBack = document.querySelector('.card-back');
+      cardBack.className = 'card-back ' + rarity;
+
+      // Flip card animation
+      setTimeout(() => {
+        card.classList.add('flipped');
+        drawButton.disabled = false;
+      }, 500);
+    }
+  };
+})();
+</script>

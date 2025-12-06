@@ -1,0 +1,70 @@
+<script>
+console.log('🎮 Interests script loaded at:', new Date().toISOString());
+
+// Inline script for interests links - loaded in head with defer behavior
+window.addEventListener('load', function() {
+  console.log('🚀 Page fully loaded, initializing interests links...');
+
+  setTimeout(function() {
+    // Map of interests to their tutorial URLs
+    const interestLinks = {
+      'Computer Vision': '#',
+      'Large Language Models': '#',
+      'Reinforcement Learning': '#'
+    };
+
+    // Try multiple selectors - including the ones from actual HTML
+    const selectors = [
+      '.hbb-interests span',
+      '.blox-resume-biography-3 .hbb-interests span',
+      '.hbb-interests ul li',
+      '.blox-resume-biography-3 .hbb-interests ul li',
+      '[class*="interests"] ul li',
+      '[class*="interests"] span',
+      '.interests ul li',
+      '.interests span',
+      'span[class*="inline-block"]'
+    ];
+
+    let items = [];
+    for (const selector of selectors) {
+      items = document.querySelectorAll(selector);
+      if (items.length > 0) {
+        console.log('✅ Found', items.length, 'interest items with selector:', selector);
+        break;
+      }
+    }
+
+    if (items.length === 0) {
+      console.warn('❌ No interest items found with any selector');
+      console.log('Available selectors tried:', selectors);
+      return;
+    }
+
+    items.forEach((item, index) => {
+      const text = item.textContent.trim();
+      console.log(`📝 Processing interest ${index}:`, text);
+
+      if (interestLinks[text] && interestLinks[text] !== '#') {
+        console.log('🔗 Adding click handler to:', text);
+
+        item.setAttribute('data-link', interestLinks[text]);
+        item.style.cursor = 'pointer !important';
+        item.classList.remove('cursor-default');
+        item.classList.add('cursor-pointer');
+
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('🎯 Clicked! Navigating to:', interestLinks[text]);
+          window.location.href = interestLinks[text];
+        });
+
+        console.log('✅ Successfully added click handler to:', text);
+      }
+    });
+
+    console.log('🎉 Interests initialization complete!');
+  }, 100);
+});
+</script>
