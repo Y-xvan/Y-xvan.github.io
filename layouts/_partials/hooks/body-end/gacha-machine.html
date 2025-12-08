@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <button id="draw-button" onclick="drawCard()">
+    <button id="draw-button">
       <span class="button-text">Draw Card</span>
       <span class="button-shine"></span>
     </button>
@@ -429,8 +429,8 @@ function closeGacha() {
     }
   });
 
-  // Draw card function
-  window.drawCard = function() {
+  // Draw card function (internal)
+  function drawCard() {
     const card = document.getElementById('gacha-card');
     const drawButton = document.getElementById('draw-button');
 
@@ -499,8 +499,21 @@ function closeGacha() {
       setTimeout(() => {
         card.classList.add('flipped');
         drawButton.disabled = false;
+
+        // 如果抽到传说级卡片，解锁 Matrix 代码雨
+        if (rarity === 'legendary' && typeof window.unlockMatrix === 'function') {
+          setTimeout(() => {
+            window.unlockMatrix();
+          }, 1000); // 在卡片翻转后1秒触发解锁
+        }
       }, 500);
     }
-  };
+  }
+
+  // Bind draw button click event
+  const drawButton = document.getElementById('draw-button');
+  if (drawButton) {
+    drawButton.addEventListener('click', drawCard);
+  }
 })();
 </script>

@@ -1,117 +1,349 @@
+<!-- 左上角菜单按钮 -->
+<div id="secret-menu-button" class="secret-menu-button" style="display: none;">
+  <div class="menu-icon">📖</div>
+</div>
+
 <!-- Konami Code 彩蛋说明书 -->
 <div id="easter-egg-manual" class="easter-egg-modal">
   <div class="easter-egg-content">
-    <button class="easter-egg-close" onclick="closeEasterEggManual()">×</button>
+    <button class="easter-egg-close">×</button>
 
     <div class="manual-header">
-      <h1>🎮 隐藏彩蛋说明书 🎮</h1>
-      <p class="manual-subtitle">恭喜你发现了这个隐藏页面！</p>
-      <div class="konami-badge">密码: yuzhixuan 已解锁</div>
+      <h1>🎮 Secret Manual 🎮</h1>
+      <p class="manual-subtitle">Congratulations on discovering this hidden page!</p>
+      <div class="konami-badge">Secret Code: ↑↓↑↓←→←→ Unlocked</div>
     </div>
 
     <div class="manual-body">
-      <!-- 小狗宠物系统 -->
-      <div class="egg-card">
-        <div class="egg-icon">🐕</div>
+      <!-- 解锁进度区域 -->
+      <div class="unlock-progress-section">
+        <h2 class="section-title">🔓 Unlock Progress</h2>
+        <div class="progress-cards">
+          <!-- 木鱼功德系统 -->
+          <div class="unlock-card locked" id="unlock-card-muyu">
+            <div class="unlock-card-header">
+              <div class="unlock-icon locked-icon">❓</div>
+              <div class="unlock-icon unlocked-icon" style="display: none;">🙏</div>
+              <div class="unlock-title locked-title">???</div>
+              <div class="unlock-title unlocked-title" style="display: none;">Merit System</div>
+              <div class="unlock-status locked">🔒 Locked</div>
+            </div>
+            <div class="unlock-requirement">Click avatar 1 time to unlock</div>
+          </div>
+
+          <!-- 虚拟宠物狗 -->
+          <div class="unlock-card locked" id="unlock-card-dog">
+            <div class="unlock-card-header">
+              <div class="unlock-icon locked-icon">❓</div>
+              <div class="unlock-icon unlocked-icon" style="display: none;">🐕</div>
+              <div class="unlock-title locked-title">???</div>
+              <div class="unlock-title unlocked-title" style="display: none;">Virtual Pet Dog</div>
+              <div class="unlock-status locked">🔒 Locked</div>
+            </div>
+            <div class="unlock-requirement">Click avatar 66 times to unlock</div>
+          </div>
+
+          <!-- 扭蛋机 -->
+          <div class="unlock-card locked" id="unlock-card-gacha">
+            <div class="unlock-card-header">
+              <div class="unlock-icon locked-icon">❓</div>
+              <div class="unlock-icon unlocked-icon" style="display: none;">🎰</div>
+              <div class="unlock-title locked-title">???</div>
+              <div class="unlock-title unlocked-title" style="display: none;">Gacha Machine</div>
+              <div class="unlock-status locked">🔒 Locked</div>
+            </div>
+            <div class="unlock-requirement">Click "Papers" in navigation to unlock</div>
+          </div>
+
+          <!-- Matrix 代码雨 -->
+          <div class="unlock-card locked" id="unlock-card-matrix">
+            <div class="unlock-card-header">
+              <div class="unlock-icon locked-icon">❓</div>
+              <div class="unlock-icon unlocked-icon" style="display: none;">💻</div>
+              <div class="unlock-title locked-title">???</div>
+              <div class="unlock-title unlocked-title" style="display: none;">Matrix Rain</div>
+              <div class="unlock-status locked">🔒 Locked</div>
+            </div>
+            <div class="unlock-requirement">Draw a Legendary card from Gacha to unlock</div>
+          </div>
+
+          <!-- 时间旅行者日记 -->
+          <div class="unlock-card locked" id="unlock-card-time-diary">
+            <div class="unlock-card-header">
+              <div class="unlock-icon locked-icon">❓</div>
+              <div class="unlock-icon unlocked-icon" style="display: none;">⏰</div>
+              <div class="unlock-title locked-title">???</div>
+              <div class="unlock-title unlocked-title" style="display: none;">Time Traveler's Diary</div>
+              <div class="unlock-status locked">🔒 Locked</div>
+            </div>
+            <div class="unlock-requirement">Type "time" on keyboard to unlock</div>
+          </div>
+        </div>
+        </div>
+
+        <!-- 总进度条 -->
+        <div class="total-progress">
+          <div class="progress-label">Total Progress</div>
+          <div class="progress-bar-wrapper">
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="total-progress-bar"></div>
+            </div>
+            <div class="progress-text" id="total-progress-text">0 / 66</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 分隔线 -->
+      <div class="section-divider"></div>
+
+      <!-- 功能说明区域 -->
+      <h2 class="section-title" id="features-guide-title">🏆 Achievements</h2>
+
+      <!-- 木鱼成就进度 -->
+      <div class="egg-card achievement-card" id="achievement-card-muyu" style="border: 2px solid #FFD700; background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 140, 0, 0.1) 100%);">
+        <div class="egg-icon" id="achievement-icon">🙏</div>
         <div class="egg-details">
-          <h3>虚拟宠物狗系统</h3>
+          <h3 id="achievement-title">First Step</h3>
           <div class="egg-description">
-            <p><strong>如何使用：</strong></p>
-            <ul>
-              <li>点击右上角的 "Release" 按钮释放小狗</li>
-              <li>小狗会跟随你的鼠标移动，距离越远跑得越快</li>
-              <li>点击小狗可以查看它的状态（心情、健康、能量、饥饿度）</li>
-              <li>每次点击小狗会增加它的心情和饱腹度（喂食互动）</li>
-              <li>移动鼠标可以帮助小狗恢复能量（追逐游戏）</li>
-              <li>点击 "Recall" 按钮可以收回小狗</li>
-            </ul>
-            <p><strong>状态说明：</strong></p>
-            <ul>
-              <li>😊 心情：受饱腹度和能量影响</li>
-              <li>❤️ 健康：受心情影响</li>
-              <li>⚡ 能量：通过移动鼠标恢复</li>
-              <li>🍖 饥饿度：点击小狗喂食恢复</li>
-            </ul>
+            <p id="achievement-desc">Welcome to the journey!</p>
+
+            <!-- 已达成成就历史 -->
+            <div class="achievement-history" id="achievement-history">
+              <p class="achievement-history-title"><strong>Achievement Journey:</strong></p>
+              <div class="achievement-timeline" id="achievement-timeline">
+                <!-- 动态填充 -->
+              </div>
+            </div>
+
+            <div class="achievement-progress">
+              <div class="achievement-stats">
+                <span id="current-clicks">0</span> / <span id="next-threshold">10</span>
+              </div>
+              <div class="achievement-bar-wrapper">
+                <div class="achievement-bar-bg">
+                  <div class="achievement-bar-fill" id="achievement-progress-bar"></div>
+                </div>
+              </div>
+              <p class="next-achievement-hint" id="next-achievement-hint">
+                <strong>Next Achievement:</strong> 📚 Diligent Scholar (10 clicks)
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- 木鱼功德系统 -->
-      <div class="egg-card">
-        <div class="egg-icon">🙏</div>
+      <div class="egg-card locked-feature" id="feature-card-muyu">
+        <div class="egg-icon locked-icon">❓</div>
         <div class="egg-details">
-          <h3>木鱼功德系统</h3>
+          <h3 class="locked-title">Locked Feature</h3>
+          <div class="egg-description locked-desc">
+            <p>🔒 This feature is not yet unlocked</p>
+            <p>Unlock condition: Click avatar 1 time</p>
+          </div>
+        </div>
+        <div class="egg-icon unlocked-icon" style="display: none;">🙏</div>
+        <div class="egg-details unlocked-details" style="display: none;">
+          <h3>Merit System</h3>
           <div class="egg-description">
-            <p><strong>如何使用：</strong></p>
+            <p><strong>How to Use:</strong></p>
             <ul>
-              <li>点击首页的头像即可敲木鱼</li>
-              <li>每次点击会增加功德值，显示在头像上方</li>
-              <li>随机出现学术祝福语（论文、项目、答辩等）</li>
-              <li>功德值会自动保存，下次访问继续累积</li>
+              <li>Click the avatar on the homepage to tap the wooden fish (merit counter visible after unlock)</li>
+              <li>Each click increases merit value, displayed above the avatar</li>
+              <li>Random academic blessings appear (papers, projects, defense, etc.)</li>
+              <li>Merit value is auto-saved and accumulates across visits</li>
             </ul>
-            <p><strong>祝福语包括：</strong></p>
+            <p><strong>Blessings Include:</strong></p>
             <ul>
-              <li>顶刊预定、论文上岸、实验成功</li>
-              <li>答辩过过过、奖学金Get</li>
-              <li>项目到手、开源大吉</li>
-              <li>还有更多惊喜等你发现...</li>
+              <li>Top journal secured, paper accepted, experiment success</li>
+              <li>Defense passed, scholarship obtained</li>
+              <li>Project secured, open source blessed</li>
+              <li>And more surprises waiting to be discovered...</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 小狗宠物系统 -->
+      <div class="egg-card locked-feature" id="feature-card-dog">
+        <div class="egg-icon locked-icon">❓</div>
+        <div class="egg-details">
+          <h3 class="locked-title">Locked Feature</h3>
+          <div class="egg-description locked-desc">
+            <p>🔒 This feature is not yet unlocked</p>
+            <p>Unlock condition: Click avatar 66 times</p>
+          </div>
+        </div>
+        <div class="egg-icon unlocked-icon" style="display: none;">🐕</div>
+        <div class="egg-details unlocked-details" style="display: none;">
+          <h3>Virtual Pet Dog System</h3>
+          <div class="egg-description">
+            <p><strong>How to Use:</strong></p>
+            <ul>
+              <li>After unlocking, click the "Release" button in the top right to release the dog</li>
+              <li>The dog follows your mouse movement, running faster the farther away it is</li>
+              <li>Click the dog to view its status (mood, health, energy, hunger)</li>
+              <li>Each click increases its mood and satiety (feeding interaction)</li>
+              <li>Moving the mouse helps the dog restore energy (chase game)</li>
+              <li>Click the "Recall" button to call the dog back</li>
+            </ul>
+            <p><strong>Status Indicators:</strong></p>
+            <ul>
+              <li>😊 Mood: Affected by satiety and energy</li>
+              <li>❤️ Health: Affected by mood</li>
+              <li>⚡ Energy: Restored by moving the mouse</li>
+              <li>🍖 Hunger: Restored by clicking the dog to feed</li>
             </ul>
           </div>
         </div>
       </div>
 
       <!-- 矩阵代码雨 -->
-      <div class="egg-card">
-        <div class="egg-icon">💻</div>
+      <div class="egg-card locked-feature" id="feature-card-matrix">
+        <div class="egg-icon locked-icon">❓</div>
         <div class="egg-details">
-          <h3>Matrix 代码雨效果</h3>
+          <h3 class="locked-title">Locked Feature</h3>
+          <div class="egg-description locked-desc">
+            <p>🔒 This feature is not yet unlocked</p>
+            <p>Unlock condition: Draw a Legendary (golden) card from Gacha</p>
+          </div>
+        </div>
+        <div class="egg-icon unlocked-icon" style="display: none;">💻</div>
+        <div class="egg-details unlocked-details" style="display: none;">
+          <h3>Matrix Rain Effect</h3>
           <div class="egg-description">
-            <p><strong>如何使用：</strong></p>
+            <p><strong>How to Use:</strong></p>
             <ul>
-              <li>点击右侧的 <code>{ }</code> 按钮开启/关闭代码雨效果</li>
-              <li>代码雨会在背景上显示动态的编程相关文字</li>
-              <li>包含 Python、AI/ML 相关的关键词</li>
-              <li>鼠标靠近代码雨会产生互动高亮效果</li>
-              <li>快捷键：<code>Ctrl/Cmd + M</code> 切换效果</li>
-              <li><code>ESC</code> 键可以关闭代码雨</li>
-              <li>状态会自动保存，刷新页面保持开启/关闭状态</li>
+              <li>Click the <code>{ }</code> button on the right to toggle the Matrix rain effect</li>
+              <li>The code rain displays dynamic programming-related text on the background</li>
+              <li>Contains Python, AI/ML related keywords</li>
+              <li>Mouse proximity creates interactive highlighting effects</li>
+              <li>Shortcut: <code>Ctrl/Cmd + M</code> to toggle effect</li>
+              <li><code>ESC</code> key closes the code rain</li>
+              <li>State is auto-saved, persists through page refreshes</li>
             </ul>
-            <p><strong>特效包含：</strong></p>
+            <p><strong>Effects Include:</strong></p>
             <ul>
               <li>PyTorch, TensorFlow, Graph, Neural Network</li>
               <li>Deep Learning, AI, ML, CV, NLP, RL, GNN</li>
               <li>Transformer, Attention, LSTM, CNN, RNN</li>
-              <li>以及更多机器学习相关术语...</li>
+              <li>And more machine learning terminology...</li>
             </ul>
           </div>
         </div>
       </div>
 
       <!-- 研究灵感扭蛋机 -->
-      <div class="egg-card">
-        <div class="egg-icon">🎰</div>
+      <div class="egg-card locked-feature" id="feature-card-gacha">
+        <div class="egg-icon locked-icon">❓</div>
         <div class="egg-details">
-          <h3>研究灵感扭蛋机</h3>
+          <h3 class="locked-title">Locked Feature</h3>
+          <div class="egg-description locked-desc">
+            <p>🔒 This feature is not yet unlocked</p>
+            <p>Unlock condition: Click the "Papers" link in navigation</p>
+          </div>
+        </div>
+        <div class="egg-icon unlocked-icon" style="display: none;">🎰</div>
+        <div class="egg-details unlocked-details" style="display: none;">
+          <h3>Research Inspiration Gacha Machine</h3>
           <div class="egg-description">
-            <p><strong>如何使用：</strong></p>
+            <p><strong>How to Use:</strong></p>
             <ul>
-              <li>点击右侧的 "🎰 Gacha" 按钮打开扭蛋机</li>
-              <li>点击 "Draw Card" 按钮抽取研究灵感卡片</li>
-              <li>卡片会翻转展示随机的研究方向组合</li>
-              <li>每次抽取都是独特的研究灵感组合</li>
+              <li>Click the "🎰 Gacha" button on the right to open the gacha machine</li>
+              <li>Click the "Draw Card" button to draw research inspiration cards</li>
+              <li>Cards flip to reveal random research direction combinations</li>
+              <li>Each draw is a unique research inspiration combination</li>
             </ul>
-            <p><strong>稀有度等级：</strong></p>
+            <p><strong>Rarity Levels:</strong></p>
             <ul>
-              <li>⚪ Common（普通）- 40% 概率</li>
-              <li>🔵 Rare（稀有）- 30% 概率</li>
-              <li>🟣 Epic（史诗）- 20% 概率</li>
-              <li>🟡 Legendary（传说）- 10% 概率，带特殊光效</li>
+              <li>⚪ Common - 40% probability</li>
+              <li>🔵 Rare - 30% probability</li>
+              <li>🟣 Epic - 20% probability</li>
+              <li>🟡 Legendary - 10% probability, with special light effects</li>
             </ul>
-            <p><strong>组合类型：</strong></p>
+            <p><strong>Combination Types:</strong></p>
             <ul>
-              <li>研究方向 × 技术：如 "Graph Learning × Transformer"</li>
-              <li>技术 × 应用：如 "Few-shot Learning × Drug Discovery"</li>
-              <li>包含 CV、NLP、RL、GNN 等多个领域</li>
+              <li>Research Direction × Technology: e.g., "Graph Learning × Transformer"</li>
+              <li>Technology × Application: e.g., "Few-shot Learning × Drug Discovery"</li>
+              <li>Covers multiple fields including CV, NLP, RL, GNN, etc.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 时间旅行者日记 -->
+      <div class="egg-card locked-feature" id="feature-card-time-diary">
+        <div class="egg-icon locked-icon">❓</div>
+        <div class="egg-details">
+          <h3 class="locked-title">Locked Feature</h3>
+          <div class="egg-description locked-desc">
+            <p>🔒 This feature is not yet unlocked</p>
+            <p>Unlock condition: Type "time" on keyboard</p>
+          </div>
+        </div>
+        <div class="egg-icon unlocked-icon" style="display: none;">⏰</div>
+        <div class="egg-details unlocked-details" style="display: none;">
+          <h3>Time Traveler's Diary</h3>
+          <div class="egg-description">
+            <p><strong>How to Use:</strong></p>
+            <ul>
+              <li>Type <code>time</code> on your keyboard anywhere on the website</li>
+              <li>The diary will open, showing your current research status based on your local time</li>
+              <li>View different status messages for different time periods</li>
+              <li>Track your visit history and patterns</li>
+            </ul>
+            <p><strong>Time Periods:</strong></p>
+            <ul>
+              <li>🌙 Late Night (0:00-5:59) - "Night Owl Mode"</li>
+              <li>🌅 Early Morning (6:00-8:59) - "Early Bird"</li>
+              <li>☀️ Morning (9:00-11:59) - "Productive Morning"</li>
+              <li>🍜 Lunch (12:00-13:59) - "Lunch Time"</li>
+              <li>💻 Afternoon (14:00-17:59) - "Afternoon Grind"</li>
+              <li>🌆 Evening (18:00-19:59) - "Evening Wind Down"</li>
+              <li>🌃 Night (20:00-23:59) - "Inspiration Hour"</li>
+            </ul>
+            <p><strong>Features:</strong></p>
+            <ul>
+              <li>Real-time clock with your timezone</li>
+              <li>Visit statistics (total visits, night owl count, early bird count)</li>
+              <li>24-hour visit heatmap</li>
+              <li>Recent visit history</li>
+              <li>All data saved locally and persists across visits</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 探索者成就 -->
+      <div class="egg-card locked-feature" id="feature-card-explorer">
+        <div class="egg-icon locked-icon">❓</div>
+        <div class="egg-details">
+          <h3 class="locked-title">Locked Achievement</h3>
+          <div class="egg-description locked-desc">
+            <p>🔒 This achievement is not yet unlocked</p>
+            <p>Unlock condition: Visit homepage and click GitHub link</p>
+          </div>
+        </div>
+        <div class="egg-icon unlocked-icon" style="display: none;">🗺️</div>
+        <div class="egg-details unlocked-details" style="display: none;">
+          <h3>Explorer Achievement</h3>
+          <div class="egg-description">
+            <p><strong>Congratulations!</strong></p>
+            <p>You have successfully visited all pages on this website:</p>
+            <ul>
+              <li>✅ Homepage - The main landing page</li>
+              <li>✅ GitHub Page - My GitHub profile</li>
+            </ul>
+            <p><strong>Achievement Details:</strong></p>
+            <ul>
+              <li>This is a special achievement for curious explorers</li>
+              <li>You've taken the time to explore different parts of my online presence</li>
+              <li>Thank you for your interest in learning more about me and my work!</li>
+            </ul>
+            <p><strong>Reward:</strong></p>
+            <ul>
+              <li>🏆 Explorer Badge (displayed in this Secret Manual)</li>
+              <li>🌟 Permanent record of your exploration</li>
             </ul>
           </div>
         </div>
@@ -121,20 +353,105 @@
       <div class="egg-card special">
         <div class="egg-icon">🎮</div>
         <div class="egg-details">
-          <h3>隐藏密码彩蛋</h3>
+          <h3>Secret Manual</h3>
           <div class="egg-description">
-            <p><strong>如何触发：</strong></p>
+            <p><strong>How to Trigger:</strong></p>
             <ul>
-              <li>使用键盘输入：<code>yuzhixuan</code></li>
-              <li>成功后会打开这个彩蛋说明书页面</li>
-              <li>关闭后可以重新输入密码再次打开</li>
+              <li>Press keyboard arrow keys: <code>↑ ↓ ↑ ↓ ← → ← →</code></li>
+              <li>Upon success, this Secret Manual will open</li>
+              <li>Can be reopened by entering the code again after closing</li>
             </ul>
-            <p><strong>小提示：</strong></p>
+            <p><strong>Tips:</strong></p>
             <ul>
-              <li>这是专属于你的个性化彩蛋密码</li>
-              <li>在网站任何页面都可以触发</li>
-              <li>输入正确会有音效提示</li>
+              <li>This is the classic Konami Code sequence</li>
+              <li>Can be triggered on any page of the website</li>
+              <li>Correct input will open the secret manual immediately</li>
             </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 开发者模式 -->
+      <div class="egg-card locked-feature" id="feature-card-developer" style="border-color: #FF1493; background: linear-gradient(135deg, rgba(255, 20, 147, 0.15) 0%, rgba(138, 43, 226, 0.15) 100%);">
+        <div class="egg-icon locked-icon">❓</div>
+        <div class="egg-details">
+          <h3 class="locked-title">Locked Achievement</h3>
+          <div class="egg-description locked-desc">
+            <p>🔒 This is a hidden developer achievement</p>
+            <p>Find the secret code to unlock powerful developer tools...</p>
+          </div>
+        </div>
+        <div class="egg-icon unlocked-icon" style="display: none;">👨‍💻</div>
+        <div class="egg-details unlocked-details" style="display: none;">
+          <h3>Developer Mode</h3>
+          <div class="egg-description">
+            <p><strong>Unlock All Features:</strong></p>
+            <ul>
+              <li>Type on keyboard: <code>yuzhixuan</code></li>
+              <li>Upon success, ALL achievements and components will be unlocked instantly</li>
+              <li>This is a special mode for developers and testers</li>
+            </ul>
+            <p><strong>Clear All Cache:</strong></p>
+            <ul>
+              <li>Type on keyboard: <code>clearcache</code></li>
+              <li>This will clear all localStorage data and reset everything</li>
+              <li>Perfect for testing the first-time experience</li>
+              <li>The page will automatically reload after 3 seconds</li>
+            </ul>
+            <p><strong>What Gets Unlocked:</strong></p>
+            <ul>
+              <li>🙏 Merit System (instantly unlocked)</li>
+              <li>🐕 Virtual Pet Dog (instantly unlocked)</li>
+              <li>🎰 Gacha Machine (instantly unlocked)</li>
+              <li>💻 Matrix Rain (instantly unlocked)</li>
+              <li>⏰ Time Traveler's Diary (instantly unlocked)</li>
+              <li>🗺️ Explorer Achievement (instantly unlocked)</li>
+            </ul>
+            <p><strong>Tips:</strong></p>
+            <ul>
+              <li>Developer mode is a cheat code to skip the unlocking process</li>
+              <li>Clear cache to test unlock animations and first-time experiences</li>
+              <li>Can be triggered on any page of the website</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 创作者代码成就区域 - 只有在开发者模式解锁后才显示 -->
+      <div id="creator-codes-section" style="display: none;">
+        <!-- 分隔线 -->
+        <div class="section-divider"></div>
+
+        <h2 class="section-title" style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 28px;">🎨 创作者代码成就 / Creator Code Achievements</h2>
+
+        <div class="egg-card special" style="border: 3px solid #667eea; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);">
+          <div class="egg-icon">🏆</div>
+          <div class="egg-details">
+            <h3 style="text-align: center; color: #667eea;">解锁所有隐藏代码，成为真正的探索者！</h3>
+            <div class="egg-description">
+              <p style="text-align: center; font-style: italic; color: #888;">Unlock all hidden codes to become a true explorer!</p>
+
+              <!-- 创作者代码成就进度 -->
+              <div style="margin: 20px 0; text-align: center;">
+                <div class="progress-label" style="font-size: 16px; font-weight: bold; margin-bottom: 10px;">
+                  <span id="creator-codes-unlocked">0</span> / <span id="creator-codes-total">3</span> 已解锁
+                </div>
+                <div class="progress-bar-wrapper" style="max-width: 500px; margin: 0 auto;">
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="creator-codes-progress-bar" style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 创作者代码列表 -->
+              <div class="creator-codes-grid" id="creator-codes-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-top: 20px;">
+                <!-- 动态填充创作者代码成就 -->
+              </div>
+
+              <p style="margin-top: 20px; text-align: center; color: #666; font-size: 14px;">
+                💡 提示：这些成就会在你触发对应的隐藏代码时自动解锁，并在控制台输出解锁信息！
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -143,28 +460,81 @@
       <div class="egg-card hint">
         <div class="egg-icon">💡</div>
         <div class="egg-details">
-          <h3>更多彩蛋...</h3>
+          <h3>More Achievements...</h3>
           <div class="egg-description">
-            <p>这个网站可能还隐藏了更多有趣的功能，等待你去发现！</p>
-            <p>试试：</p>
+            <p>This website may hide more interesting achievements and features, waiting for you to discover!</p>
+            <p>Try:</p>
             <ul>
-              <li>在不同时间访问网站</li>
-              <li>尝试各种鼠标交互</li>
-              <li>探索页面的每个角落</li>
-              <li>保持好奇心 😊</li>
+              <li>Visit the website at different times</li>
+              <li>Try various mouse interactions</li>
+              <li>Explore every corner of the page</li>
+              <li>Stay curious 😊</li>
             </ul>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="manual-footer">
-      <p>祝你探索愉快！如有问题欢迎联系 📧</p>
+    <div class="manual-footer" style="display: none;">
     </div>
   </div>
 </div>
 
 <style>
+/* 左上角菜单按钮 */
+.secret-menu-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  cursor: pointer;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  animation: menuButtonPulse 2s ease-in-out infinite;
+}
+
+.secret-menu-button:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+@keyframes menuButtonPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+  }
+}
+
+.menu-icon {
+  font-size: 28px;
+  user-select: none;
+}
+
+@media (max-width: 768px) {
+  .secret-menu-button {
+    width: 50px;
+    height: 50px;
+    top: 15px;
+    left: 15px;
+  }
+
+  .menu-icon {
+    font-size: 24px;
+  }
+}
+
 .easter-egg-modal {
   display: none;
   position: fixed;
@@ -173,6 +543,7 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.9);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   z-index: 999999;
   overflow-y: auto;
@@ -267,6 +638,7 @@
   font-size: 14px;
   font-weight: 600;
   border: 2px solid rgba(255, 255, 255, 0.3);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 
@@ -285,6 +657,7 @@
   display: flex;
   gap: 25px;
   transition: all 0.3s ease;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 
@@ -303,6 +676,25 @@
 .egg-card.hint {
   border: 2px dashed rgba(255, 255, 255, 0.3);
   background: rgba(255, 255, 255, 0.03);
+}
+
+.egg-card.locked-feature {
+  display: flex; /* 显示未解锁的功能卡片 */
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(128, 128, 128, 0.3);
+}
+
+.egg-card.locked-feature .locked-icon {
+  background: rgba(50, 50, 50, 0.8);
+  filter: grayscale(100%) brightness(0.3);
+}
+
+.egg-card.locked-feature .locked-title {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.egg-card.locked-feature .locked-desc {
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .egg-icon {
@@ -360,6 +752,267 @@
   font-size: 14px;
   color: #FFD700;
   border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+/* 解锁进度区域样式 */
+.unlock-progress-section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  text-align: center;
+}
+
+.progress-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.unlock-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 15px;
+  transition: all 0.3s ease;
+}
+
+.unlock-card.locked {
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(128, 128, 128, 0.3);
+}
+
+.unlock-card.locked .locked-icon {
+  background: rgba(50, 50, 50, 0.8);
+  filter: grayscale(100%) brightness(0.3);
+}
+
+.unlock-card.locked .locked-title {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.unlock-card.unlocked {
+  border-color: rgba(102, 226, 174, 0.5);
+  background: rgba(102, 226, 174, 0.1);
+}
+
+.unlock-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.unlock-card .unlock-icon {
+  font-size: 32px;
+}
+
+.unlock-title {
+  flex: 1;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.unlock-status {
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.unlock-status.locked {
+  background: rgba(255, 107, 107, 0.2);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.unlock-status.unlocked {
+  background: rgba(102, 226, 174, 0.2);
+  color: #66e2ae;
+  border: 1px solid rgba(102, 226, 174, 0.3);
+}
+
+.unlock-requirement {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+  display: none; /* 默认隐藏解锁条件 */
+}
+
+.unlock-card.unlocked .unlock-requirement {
+  display: block; /* 解锁后显示解锁条件 */
+}
+
+.total-progress {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.progress-label {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.progress-bar-wrapper {
+  position: relative;
+}
+
+.progress-bar-bg {
+  background: rgba(255, 255, 255, 0.1);
+  height: 28px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  transition: width 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  width: 0%;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.section-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+  margin: 30px 0;
+}
+
+/* 木鱼成就卡片样式 */
+.achievement-card {
+  animation: achievementGlow 3s ease-in-out infinite;
+}
+
+@keyframes achievementGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+  }
+}
+
+.achievement-progress {
+  margin-top: 15px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.achievement-stats {
+  color: #FFD700;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.achievement-bar-wrapper {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.achievement-bar-bg {
+  background: rgba(255, 255, 255, 0.1);
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.achievement-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FFD700 0%, #FFA500 100%);
+  transition: width 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  width: 0%;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.next-achievement-hint {
+  margin: 8px 0 0 0;
+  font-size: 13px;
+  color: rgba(255, 215, 0, 0.9);
+  text-align: center;
+}
+
+.next-achievement-hint strong {
+  color: #FFD700;
+}
+
+/* 成就历史样式 */
+.achievement-history {
+  margin: 15px 0;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 215, 0, 0.15);
+}
+
+.achievement-history-title {
+  color: rgba(255, 215, 0, 0.95);
+  font-size: 14px;
+  margin: 0 0 10px 0;
+}
+
+.achievement-timeline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.8;
+}
+
+.achievement-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: rgba(255, 215, 0, 0.15);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 15px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
+}
+
+.achievement-badge:hover {
+  background: rgba(255, 215, 0, 0.25);
+  transform: translateY(-2px);
+}
+
+.achievement-badge .badge-icon {
+  font-size: 16px;
+}
+
+.achievement-badge .badge-title {
+  font-weight: 600;
+}
+
+.achievement-arrow {
+  color: rgba(255, 215, 0, 0.6);
+  font-size: 16px;
+  margin: 0 2px;
 }
 
 .manual-footer {
@@ -427,10 +1080,82 @@
 <script>
 // 隐藏密码监听
 (function() {
-  const secretCode = 'yuzhixuan';
-  let currentInput = '';
+  // 方向键序列：上下上下左右左右
+  const arrowSequence = ['ArrowUp', 'ArrowDown', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
+  let currentArrowInput = [];
+
+  // 开发者模式密码
+  const devCode = 'yuzhixuan';
+  const clearCacheCode = 'clearcache'; // 清除缓存密码
+  let currentTextInput = '';
+
   let lastKeyTime = Date.now();
   const modal = document.getElementById('easter-egg-manual');
+
+  // 开发者模式：解锁所有功能
+  function unlockAllFeatures() {
+    // 解锁创作者代码成就：开发者模式
+    if (typeof window.unlockDeveloperCode === 'function') {
+      window.unlockDeveloperCode();
+    }
+
+    // 先解锁开发者模式本身
+    localStorage.setItem('developerModeUnlocked', 'true');
+
+    // 解锁所有其他功能
+    localStorage.setItem('muyuTotalClicks', '66');
+    localStorage.setItem('muyuUnlocked', 'true');
+    localStorage.setItem('dogUnlocked', 'true');
+    localStorage.setItem('gachaUnlocked', 'true');
+    localStorage.setItem('matrixUnlocked', 'true');
+    localStorage.setItem('timeDiaryUnlocked', 'true');
+    localStorage.setItem('explorerUnlocked', 'true');
+
+    // 重新加载解锁状态（从 localStorage 读取到内存）
+    if (typeof window.loadUnlockStatus === 'function') {
+      window.loadUnlockStatus();
+    }
+
+    // 显示解锁动画
+    if (typeof window.showUnlockAnimation === 'function') {
+      setTimeout(() => window.showUnlockAnimation('👨‍💻', 'Developer Mode Activated!', 'All features unlocked instantly!'), 100);
+    }
+
+    // 更新UI（显示所有按钮和图标）
+    if (typeof window.updateUI === 'function') {
+      setTimeout(() => window.updateUI(), 150);
+    }
+
+    // 打开说明书
+    setTimeout(() => openEasterEggManual(), 500);
+  }
+
+  // 清除所有缓存
+  function clearAllCache() {
+    // 解锁创作者代码成就：清除缓存（在清除前记录）
+    if (typeof window.unlockClearCache === 'function') {
+      window.unlockClearCache();
+    }
+
+    // 清除所有localStorage
+    localStorage.clear();
+
+    // 显示提示动画
+    if (typeof window.showUnlockAnimation === 'function') {
+      window.showUnlockAnimation('🧹', 'Cache Cleared!', 'All data has been reset. Refresh the page.');
+    }
+
+    // 隐藏菜单按钮
+    const menuButton = document.getElementById('secret-menu-button');
+    if (menuButton) {
+      menuButton.style.display = 'none';
+    }
+
+    // 3秒后自动刷新页面
+    setTimeout(() => {
+      location.reload();
+    }, 3000);
+  }
 
   // 监听键盘事件
   document.addEventListener('keydown', function(e) {
@@ -439,41 +1164,568 @@
 
     // 如果超过2秒没有输入，重置
     if (now - lastKeyTime > 2000) {
-      currentInput = '';
+      currentArrowInput = [];
+      currentTextInput = '';
     }
     lastKeyTime = now;
 
-    // 只接受字母
-    if (/^[a-z]$/i.test(key)) {
-      currentInput += key.toLowerCase();
+    // 检查方向键序列
+    if (key.startsWith('Arrow')) {
+      currentArrowInput.push(key);
 
-      // 只保留最近输入的字符（与密码长度相同）
-      if (currentInput.length > secretCode.length) {
-        currentInput = currentInput.slice(-secretCode.length);
+      // 只保留最近8个方向键输入
+      if (currentArrowInput.length > arrowSequence.length) {
+        currentArrowInput.shift();
       }
 
-      // 检查是否匹配密码
-      if (currentInput === secretCode) {
-        openEasterEggManual();
-        currentInput = ''; // 重置
+      // 检查是否匹配方向键序列
+      if (currentArrowInput.length === arrowSequence.length) {
+        let match = true;
+        for (let i = 0; i < arrowSequence.length; i++) {
+          if (currentArrowInput[i] !== arrowSequence[i]) {
+            match = false;
+            break;
+          }
+        }
 
-        // 添加成功音效
-        playSuccessSound();
+        if (match) {
+          openEasterEggManual();
+          currentArrowInput = []; // 重置
+        }
+      }
+    }
+
+    // 检查开发者模式密码和清除缓存密码（文字输入）
+    if (/^[a-z]$/i.test(key)) {
+      currentTextInput += key.toLowerCase();
+
+      // 保留足够长的输入历史以匹配最长的密码
+      const maxLength = Math.max(devCode.length, clearCacheCode.length);
+      if (currentTextInput.length > maxLength) {
+        currentTextInput = currentTextInput.slice(-maxLength);
+      }
+
+      // 检查是否匹配清除缓存密码
+      if (currentTextInput.slice(-clearCacheCode.length) === clearCacheCode) {
+        clearAllCache();
+        currentTextInput = ''; // 重置
+        return;
+      }
+
+      // 检查是否匹配开发者密码
+      if (currentTextInput.slice(-devCode.length) === devCode) {
+        unlockAllFeatures();
+        currentTextInput = ''; // 重置
       }
     }
   });
 
-  // 打开说明书
-  window.openEasterEggManual = function() {
-    modal.classList.add('show');
-    document.body.style.overflow = 'hidden';
-  };
+  // 打开说明书（内部函数）
+  function openEasterEggManual() {
+    // 解锁创作者代码成就：Konami Code
+    if (typeof window.unlockKonamiCode === 'function') {
+      window.unlockKonamiCode();
+    }
 
-  // 关闭说明书
-  window.closeEasterEggManual = function() {
+    // 检查是否是第一次打开
+    const isFirstOpen = localStorage.getItem('secretManualUnlocked') !== 'true';
+
+    if (isFirstOpen) {
+      // 标记为已解锁
+      localStorage.setItem('secretManualUnlocked', 'true');
+
+      // 显示解锁动画
+      if (typeof window.showUnlockAnimation === 'function') {
+        window.showUnlockAnimation('🎮', 'Secret Manual Unlocked!', 'Press ↑↓↑↓←→←→ anytime to reopen');
+      }
+
+      // 显示左上角菜单按钮
+      const menuButton = document.getElementById('secret-menu-button');
+      if (menuButton) {
+        menuButton.style.display = 'flex';
+      }
+
+      // 延迟打开菜单,让用户先看到解锁动画
+      setTimeout(() => {
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+        updateUnlockProgress();
+      }, 3000);
+    } else {
+      // 非首次打开,直接打开菜单
+      modal.classList.add('show');
+      document.body.style.overflow = 'hidden';
+      updateUnlockProgress();
+    }
+  }
+
+  // 更新解锁进度显示
+  function updateUnlockProgress() {
+    // 从 localStorage 读取解锁状态
+    const muyuTotalClicks = parseInt(localStorage.getItem('muyuTotalClicks') || '0');
+    const muyuUnlocked = localStorage.getItem('muyuUnlocked') === 'true';
+    const dogUnlocked = localStorage.getItem('dogUnlocked') === 'true';
+    const gachaUnlocked = localStorage.getItem('gachaUnlocked') === 'true';
+    const matrixUnlocked = localStorage.getItem('matrixUnlocked') === 'true';
+    const timeDiaryUnlocked = localStorage.getItem('timeDiaryUnlocked') === 'true';
+    const explorerUnlocked = localStorage.getItem('explorerUnlocked') === 'true';
+    const developerModeUnlocked = localStorage.getItem('developerModeUnlocked') === 'true';
+
+    // Merit Achievement Configuration (excluding pet dog)
+    const MUYU_ACHIEVEMENTS = [
+      { count: 1, id: 'beginner', icon: '🙏', title: 'First Step', desc: 'Welcome to the journey!' },
+      { count: 10, id: 'diligent', icon: '📚', title: 'Diligent Scholar', desc: 'Every click counts' },
+      { count: 33, id: 'progress', icon: '🌟', title: 'Making Progress', desc: 'First milestone reached' },
+      { count: 99, id: 'persistence', icon: '💪', title: 'Persistent Spirit', desc: 'The path to mastery' },
+      { count: 168, id: 'allNighter', icon: '🌙', title: 'Night Owl', desc: 'A full week of dedication' },
+      { count: 233, id: 'fibonacci', icon: '🔢', title: 'Fibonacci Blessing', desc: 'Beauty of mathematics' },
+      { count: 365, id: 'yearlyContributor', icon: '📅', title: 'Year-Round Devotion', desc: 'A full year of commitment' },
+      { count: 520, id: 'loveResearch', icon: '❤️', title: 'True Passion', desc: 'Love for the work' },
+      { count: 666, id: 'devilTraining', icon: '😈', title: 'Devil\'s Advocate', desc: 'Peak performance achieved' },
+      { count: 888, id: 'perfect', icon: '🎊', title: 'Triple Fortune', desc: 'Prosperity and luck' },
+      { count: 1024, id: 'programmer', icon: '💻', title: 'Binary Master', desc: '2^10 = Perfection' }
+    ];
+
+    // 更新木鱼成就卡片
+    const achievementCard = document.getElementById('achievement-card-muyu');
+    if (achievementCard && muyuTotalClicks >= 1) {
+      // 找到当前达成的最高成就
+      let currentAchievement = MUYU_ACHIEVEMENTS[0];
+      for (let i = MUYU_ACHIEVEMENTS.length - 1; i >= 0; i--) {
+        if (muyuTotalClicks >= MUYU_ACHIEVEMENTS[i].count) {
+          currentAchievement = MUYU_ACHIEVEMENTS[i];
+          break;
+        }
+      }
+
+      // 找到下一个成就
+      let nextAchievement = null;
+      for (let i = 0; i < MUYU_ACHIEVEMENTS.length; i++) {
+        if (MUYU_ACHIEVEMENTS[i].count > muyuTotalClicks) {
+          nextAchievement = MUYU_ACHIEVEMENTS[i];
+          break;
+        }
+      }
+
+      // 更新成就卡片内容
+      const achievementIcon = document.getElementById('achievement-icon');
+      const achievementTitle = document.getElementById('achievement-title');
+      const achievementDesc = document.getElementById('achievement-desc');
+      const currentClicksEl = document.getElementById('current-clicks');
+      const nextThresholdEl = document.getElementById('next-threshold');
+      const progressBar = document.getElementById('achievement-progress-bar');
+      const nextHint = document.getElementById('next-achievement-hint');
+      const achievementTimeline = document.getElementById('achievement-timeline');
+
+      if (achievementIcon) achievementIcon.textContent = currentAchievement.icon;
+      if (achievementTitle) achievementTitle.textContent = currentAchievement.title;
+      if (achievementDesc) achievementDesc.textContent = currentAchievement.desc;
+      if (currentClicksEl) currentClicksEl.textContent = muyuTotalClicks;
+
+      // 更新成就历史时间线
+      if (achievementTimeline) {
+        // 获取所有已达成的成就
+        const unlockedAchievements = MUYU_ACHIEVEMENTS.filter(a => muyuTotalClicks >= a.count);
+
+        // 构建时间线HTML
+        let timelineHTML = '';
+        unlockedAchievements.forEach((achievement, index) => {
+          timelineHTML += `
+            <div class="achievement-badge" title="${achievement.desc}">
+              <span class="badge-icon">${achievement.icon}</span>
+              <span class="badge-title">${achievement.title}</span>
+            </div>
+          `;
+          // 如果不是最后一个，添加箭头
+          if (index < unlockedAchievements.length - 1) {
+            timelineHTML += '<span class="achievement-arrow">→</span>';
+          }
+        });
+
+        achievementTimeline.innerHTML = timelineHTML;
+      }
+
+      if (nextAchievement) {
+        // 还有下一个成就
+        if (nextThresholdEl) nextThresholdEl.textContent = nextAchievement.count;
+
+        // 计算进度百分比
+        const prevThreshold = currentAchievement.count;
+        const nextThreshold = nextAchievement.count;
+        const progress = ((muyuTotalClicks - prevThreshold) / (nextThreshold - prevThreshold)) * 100;
+
+        if (progressBar) progressBar.style.width = Math.min(progress, 100) + '%';
+        if (nextHint) {
+          nextHint.style.display = 'block';
+          nextHint.innerHTML = `<strong>Next Achievement:</strong> ${nextAchievement.icon} ${nextAchievement.title} (${nextAchievement.count} clicks)`;
+        }
+      } else {
+        // 已达成所有成就
+        if (nextThresholdEl) nextThresholdEl.textContent = '∞';
+        if (progressBar) progressBar.style.width = '100%';
+        if (nextHint) {
+          nextHint.style.display = 'block';
+          nextHint.innerHTML = '<strong>🎉 All achievements unlocked!</strong>';
+        }
+      }
+
+      // 显示成就卡片
+      achievementCard.style.display = 'flex';
+    } else if (achievementCard && muyuTotalClicks < 1) {
+      // 隐藏成就卡片(还未开始)
+      achievementCard.style.display = 'none';
+    }
+
+    // 更新进度条 - 动态计算下一个目标阈值
+    const progressBar = document.getElementById('total-progress-bar');
+    const progressText = document.getElementById('total-progress-text');
+
+    // 找到下一个未达成的成就作为目标
+    let nextTarget = 1024; // 默认最大值
+    const allAchievements = [1, 10, 33, 66, 99, 168, 233, 365, 520, 666, 888, 1024];
+    for (let threshold of allAchievements) {
+      if (muyuTotalClicks < threshold) {
+        nextTarget = threshold;
+        break;
+      }
+    }
+
+    // 如果已达成所有成就，显示最大值
+    if (muyuTotalClicks >= 1024) {
+      nextTarget = 1024;
+    }
+
+    const progress = Math.min((muyuTotalClicks / nextTarget) * 100, 100);
+
+    if (progressBar) progressBar.style.width = progress + '%';
+    if (progressText) progressText.textContent = `${muyuTotalClicks} / ${nextTarget}`;
+
+    // 更新木鱼卡片状态
+    const muyuCard = document.getElementById('unlock-card-muyu');
+    const muyuStatus = muyuCard?.querySelector('.unlock-status');
+    if (muyuUnlocked && muyuCard) {
+      muyuCard.classList.remove('locked');
+      muyuCard.classList.add('unlocked');
+      // 显示解锁后的图标和标题
+      const lockedIcon = muyuCard.querySelector('.locked-icon');
+      const unlockedIcon = muyuCard.querySelector('.unlocked-icon');
+      const lockedTitle = muyuCard.querySelector('.locked-title');
+      const unlockedTitle = muyuCard.querySelector('.unlocked-title');
+      if (lockedIcon) lockedIcon.style.display = 'none';
+      if (unlockedIcon) unlockedIcon.style.display = 'flex';
+      if (lockedTitle) lockedTitle.style.display = 'none';
+      if (unlockedTitle) unlockedTitle.style.display = 'block';
+      if (muyuStatus) {
+        muyuStatus.classList.remove('locked');
+        muyuStatus.classList.add('unlocked');
+        muyuStatus.textContent = '✅ Unlocked';
+      }
+    }
+
+    // 更新小狗卡片状态
+    const dogCard = document.getElementById('unlock-card-dog');
+    const dogStatus = dogCard?.querySelector('.unlock-status');
+    if (dogUnlocked && dogCard) {
+      dogCard.classList.remove('locked');
+      dogCard.classList.add('unlocked');
+      // 显示解锁后的图标和标题
+      const lockedIcon = dogCard.querySelector('.locked-icon');
+      const unlockedIcon = dogCard.querySelector('.unlocked-icon');
+      const lockedTitle = dogCard.querySelector('.locked-title');
+      const unlockedTitle = dogCard.querySelector('.unlocked-title');
+      if (lockedIcon) lockedIcon.style.display = 'none';
+      if (unlockedIcon) unlockedIcon.style.display = 'flex';
+      if (lockedTitle) lockedTitle.style.display = 'none';
+      if (unlockedTitle) unlockedTitle.style.display = 'block';
+      if (dogStatus) {
+        dogStatus.classList.remove('locked');
+        dogStatus.classList.add('unlocked');
+        dogStatus.textContent = '✅ Unlocked';
+      }
+    }
+
+    // 更新扭蛋机卡片状态
+    const gachaCard = document.getElementById('unlock-card-gacha');
+    const gachaStatus = gachaCard?.querySelector('.unlock-status');
+    if (gachaUnlocked && gachaCard) {
+      gachaCard.classList.remove('locked');
+      gachaCard.classList.add('unlocked');
+      // 显示解锁后的图标和标题
+      const lockedIcon = gachaCard.querySelector('.locked-icon');
+      const unlockedIcon = gachaCard.querySelector('.unlocked-icon');
+      const lockedTitle = gachaCard.querySelector('.locked-title');
+      const unlockedTitle = gachaCard.querySelector('.unlocked-title');
+      if (lockedIcon) lockedIcon.style.display = 'none';
+      if (unlockedIcon) unlockedIcon.style.display = 'flex';
+      if (lockedTitle) lockedTitle.style.display = 'none';
+      if (unlockedTitle) unlockedTitle.style.display = 'block';
+      if (gachaStatus) {
+        gachaStatus.classList.remove('locked');
+        gachaStatus.classList.add('unlocked');
+        gachaStatus.textContent = '✅ Unlocked';
+      }
+    }
+
+    // 更新 Matrix 代码雨卡片状态
+    const matrixCard = document.getElementById('unlock-card-matrix');
+    const matrixStatus = matrixCard?.querySelector('.unlock-status');
+    if (matrixUnlocked && matrixCard) {
+      matrixCard.classList.remove('locked');
+      matrixCard.classList.add('unlocked');
+      // 显示解锁后的图标和标题
+      const lockedIcon = matrixCard.querySelector('.locked-icon');
+      const unlockedIcon = matrixCard.querySelector('.unlocked-icon');
+      const lockedTitle = matrixCard.querySelector('.locked-title');
+      const unlockedTitle = matrixCard.querySelector('.unlocked-title');
+      if (lockedIcon) lockedIcon.style.display = 'none';
+      if (unlockedIcon) unlockedIcon.style.display = 'flex';
+      if (lockedTitle) lockedTitle.style.display = 'none';
+      if (unlockedTitle) unlockedTitle.style.display = 'block';
+      if (matrixStatus) {
+        matrixStatus.classList.remove('locked');
+        matrixStatus.classList.add('unlocked');
+        matrixStatus.textContent = '✅ Unlocked';
+      }
+    }
+
+    // 更新木鱼功能卡片显示
+    const muyuFeatureCard = document.getElementById('feature-card-muyu');
+    if (muyuUnlocked && muyuFeatureCard) {
+      muyuFeatureCard.classList.remove('locked-feature');
+      muyuFeatureCard.style.display = 'flex'; // 解锁后显示卡片
+      const lockedIcon = muyuFeatureCard.querySelector('.locked-icon');
+      const unlockedIcon = muyuFeatureCard.querySelector('.unlocked-icon');
+      const lockedDetails = muyuFeatureCard.querySelectorAll('.egg-details')[0];
+      const unlockedDetails = muyuFeatureCard.querySelector('.unlocked-details');
+
+      if (lockedIcon) lockedIcon.style.display = 'none';
+      if (unlockedIcon) unlockedIcon.style.display = 'flex';
+      if (lockedDetails) lockedDetails.style.display = 'none';
+      if (unlockedDetails) unlockedDetails.style.display = 'block';
+    }
+
+    // 更新小狗功能卡片显示
+    const dogFeatureCard = document.getElementById('feature-card-dog');
+    if (dogUnlocked && dogFeatureCard) {
+      dogFeatureCard.classList.remove('locked-feature');
+      dogFeatureCard.style.display = 'flex'; // 解锁后显示卡片
+      const lockedIcon = dogFeatureCard.querySelector('.locked-icon');
+      const unlockedIcon = dogFeatureCard.querySelector('.unlocked-icon');
+      const lockedDetails = dogFeatureCard.querySelectorAll('.egg-details')[0];
+      const unlockedDetails = dogFeatureCard.querySelector('.unlocked-details');
+
+      if (lockedIcon) lockedIcon.style.display = 'none';
+      if (unlockedIcon) unlockedIcon.style.display = 'flex';
+      if (lockedDetails) lockedDetails.style.display = 'none';
+      if (unlockedDetails) unlockedDetails.style.display = 'block';
+    }
+
+    // 更新扭蛋机功能卡片显示
+    const gachaFeatureCard = document.getElementById('feature-card-gacha');
+    if (gachaUnlocked && gachaFeatureCard) {
+      gachaFeatureCard.classList.remove('locked-feature');
+      gachaFeatureCard.style.display = 'flex'; // 解锁后显示卡片
+      const lockedIcon = gachaFeatureCard.querySelector('.locked-icon');
+      const unlockedIcon = gachaFeatureCard.querySelector('.unlocked-icon');
+      const lockedDetails = gachaFeatureCard.querySelectorAll('.egg-details')[0];
+      const unlockedDetails = gachaFeatureCard.querySelector('.unlocked-details');
+
+      if (lockedIcon) lockedIcon.style.display = 'none';
+      if (unlockedIcon) unlockedIcon.style.display = 'flex';
+      if (lockedDetails) lockedDetails.style.display = 'none';
+      if (unlockedDetails) unlockedDetails.style.display = 'block';
+    }
+
+    // 更新 Matrix 功能卡片显示
+    const matrixFeatureCard = document.getElementById('feature-card-matrix');
+    if (matrixUnlocked && matrixFeatureCard) {
+      matrixFeatureCard.classList.remove('locked-feature');
+      matrixFeatureCard.style.display = 'flex'; // 解锁后显示卡片
+      const lockedIcon = matrixFeatureCard.querySelector('.locked-icon');
+      const unlockedIcon = matrixFeatureCard.querySelector('.unlocked-icon');
+      const lockedDetails = matrixFeatureCard.querySelectorAll('.egg-details')[0];
+      const unlockedDetails = matrixFeatureCard.querySelector('.unlocked-details');
+
+      if (lockedIcon) lockedIcon.style.display = 'none';
+      if (unlockedIcon) unlockedIcon.style.display = 'flex';
+      if (lockedDetails) lockedDetails.style.display = 'none';
+      if (unlockedDetails) unlockedDetails.style.display = 'block';
+    }
+
+    // 更新时间旅行者日记卡片状态
+    const timeDiaryCard = document.getElementById('unlock-card-time-diary');
+    const timeDiaryStatus = timeDiaryCard?.querySelector('.unlock-status');
+    if (timeDiaryUnlocked && timeDiaryCard) {
+      timeDiaryCard.classList.remove('locked');
+      timeDiaryCard.classList.add('unlocked');
+      // 显示解锁后的图标和标题
+      const lockedIcon = timeDiaryCard.querySelector('.locked-icon');
+      const unlockedIcon = timeDiaryCard.querySelector('.unlocked-icon');
+      const lockedTitle = timeDiaryCard.querySelector('.locked-title');
+      const unlockedTitle = timeDiaryCard.querySelector('.unlocked-title');
+      if (lockedIcon) lockedIcon.style.display = 'none';
+      if (unlockedIcon) unlockedIcon.style.display = 'flex';
+      if (lockedTitle) lockedTitle.style.display = 'none';
+      if (unlockedTitle) unlockedTitle.style.display = 'block';
+      if (timeDiaryStatus) {
+        timeDiaryStatus.classList.remove('locked');
+        timeDiaryStatus.classList.add('unlocked');
+        timeDiaryStatus.textContent = '✅ Unlocked';
+      }
+    }
+
+    // 更新时间旅行者日记功能卡片显示
+    const timeDiaryFeatureCard = document.getElementById('feature-card-time-diary');
+    if (timeDiaryUnlocked && timeDiaryFeatureCard) {
+      timeDiaryFeatureCard.classList.remove('locked-feature');
+      timeDiaryFeatureCard.style.display = 'flex'; // 解锁后显示卡片
+      const lockedIcon = timeDiaryFeatureCard.querySelector('.locked-icon');
+      const unlockedIcon = timeDiaryFeatureCard.querySelector('.unlocked-icon');
+      const lockedDetails = timeDiaryFeatureCard.querySelectorAll('.egg-details')[0];
+      const unlockedDetails = timeDiaryFeatureCard.querySelector('.unlocked-details');
+
+      if (lockedIcon) lockedIcon.style.display = 'none';
+      if (unlockedIcon) unlockedIcon.style.display = 'flex';
+      if (lockedDetails) lockedDetails.style.display = 'none';
+      if (unlockedDetails) unlockedDetails.style.display = 'block';
+    }
+
+    // 更新探索者成就功能卡片显示 (Explorer is an achievement, not in Unlock Progress)
+    const explorerFeatureCard = document.getElementById('feature-card-explorer');
+    if (explorerUnlocked && explorerFeatureCard) {
+      explorerFeatureCard.classList.remove('locked-feature');
+      explorerFeatureCard.style.display = 'flex'; // 解锁后显示卡片
+      const lockedIcon = explorerFeatureCard.querySelector('.locked-icon');
+      const unlockedIcon = explorerFeatureCard.querySelector('.unlocked-icon');
+      const lockedDetails = explorerFeatureCard.querySelectorAll('.egg-details')[0];
+      const unlockedDetails = explorerFeatureCard.querySelector('.unlocked-details');
+
+      if (lockedIcon) lockedIcon.style.display = 'none';
+      if (unlockedIcon) unlockedIcon.style.display = 'flex';
+      if (lockedDetails) lockedDetails.style.display = 'none';
+      if (unlockedDetails) unlockedDetails.style.display = 'block';
+    }
+
+    // 更新开发者模式卡片显示 (Developer Mode is a hidden achievement)
+    const developerFeatureCard = document.getElementById('feature-card-developer');
+    if (developerModeUnlocked && developerFeatureCard) {
+      developerFeatureCard.classList.remove('locked-feature');
+      developerFeatureCard.style.display = 'flex'; // 解锁后显示卡片
+      const lockedIcon = developerFeatureCard.querySelector('.locked-icon');
+      const unlockedIcon = developerFeatureCard.querySelector('.unlocked-icon');
+      const lockedDetails = developerFeatureCard.querySelectorAll('.egg-details')[0];
+      const unlockedDetails = developerFeatureCard.querySelector('.unlocked-details');
+
+      if (lockedIcon) lockedIcon.style.display = 'none';
+      if (unlockedIcon) unlockedIcon.style.display = 'flex';
+      if (lockedDetails) lockedDetails.style.display = 'none';
+      if (unlockedDetails) unlockedDetails.style.display = 'block';
+    }
+
+    // ========== 更新创作者代码成就显示 ==========
+    updateCreatorCodesDisplay();
+  }
+
+  // 更新创作者代码成就显示
+  function updateCreatorCodesDisplay() {
+    // 检查是否解锁了开发者模式，如果没有则完全隐藏整个区域
+    const developerModeUnlocked = localStorage.getItem('developerModeUnlocked') === 'true';
+    const creatorCodesSection = document.getElementById('creator-codes-section');
+
+    if (!developerModeUnlocked) {
+      // 开发者模式未解锁，完全隐藏整个区域
+      if (creatorCodesSection) {
+        creatorCodesSection.style.display = 'none';
+      }
+      return;
+    }
+
+    // 开发者模式已解锁，显示区域
+    if (creatorCodesSection) {
+      creatorCodesSection.style.display = 'block';
+    }
+
+    // 从 localStorage 读取创作者代码配置（只保留3个）
+    const CREATOR_CODE_ACHIEVEMENTS = [
+      { id: 'konami_code', icon: '🎮', title: '经典密码', titleEn: 'Konami Code', desc: '发现了经典的Konami Code', code: '↑↓↑↓←→←→', trigger: '输入方向键序列' },
+      { id: 'developer_mode', icon: '👨‍💻', title: '开发者模式', titleEn: 'Developer Mode', desc: '解锁了所有隐藏功能', code: 'yuzhixuan', trigger: '键入开发者密码' },
+      { id: 'clear_cache', icon: '🧹', title: '重置大师', titleEn: 'Cache Cleaner', desc: '清除了所有缓存数据', code: 'clearcache', trigger: '键入清除密码' }
+    ];
+
+    const unlockedCreatorCodes = JSON.parse(localStorage.getItem('unlockedCreatorCodes') || '[]');
+
+    // 更新进度显示
+    const unlockedCount = unlockedCreatorCodes.length;
+    const totalCount = CREATOR_CODE_ACHIEVEMENTS.length;
+    const unlockedEl = document.getElementById('creator-codes-unlocked');
+    const totalEl = document.getElementById('creator-codes-total');
+    const progressBar = document.getElementById('creator-codes-progress-bar');
+
+    if (unlockedEl) unlockedEl.textContent = unlockedCount;
+    if (totalEl) totalEl.textContent = totalCount;
+    if (progressBar) {
+      const progress = (unlockedCount / totalCount) * 100;
+      progressBar.style.width = progress + '%';
+    }
+
+    // 渲染创作者代码列表
+    const grid = document.getElementById('creator-codes-grid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+
+    CREATOR_CODE_ACHIEVEMENTS.forEach(achievement => {
+      const isUnlocked = unlockedCreatorCodes.includes(achievement.id);
+
+      const card = document.createElement('div');
+      card.style.cssText = `
+        padding: 15px;
+        border-radius: 12px;
+        border: 2px solid ${isUnlocked ? '#667eea' : '#444'};
+        background: ${isUnlocked ? 'linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%)' : 'rgba(50, 50, 50, 0.3)'};
+        transition: all 0.3s ease;
+        ${isUnlocked ? 'box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);' : ''}
+        position: relative;
+        overflow: hidden;
+      `;
+
+      card.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+          <div style="font-size: 32px; ${isUnlocked ? '' : 'filter: grayscale(100%); opacity: 0.5;'}">${achievement.icon}</div>
+          <div style="flex: 1;">
+            <div style="font-weight: bold; font-size: 16px; color: ${isUnlocked ? '#667eea' : '#888'};">
+              ${achievement.title}
+            </div>
+            <div style="font-size: 12px; color: #999; font-style: italic;">
+              ${achievement.titleEn}
+            </div>
+          </div>
+          <div style="font-size: 24px;">
+            ${isUnlocked ? '✅' : '🔒'}
+          </div>
+        </div>
+        <div style="font-size: 13px; color: ${isUnlocked ? '#ccc' : '#666'}; margin-bottom: 8px;">
+          ${achievement.desc}
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-top: 10px; padding-top: 10px; border-top: 1px solid ${isUnlocked ? 'rgba(102, 126, 234, 0.3)' : 'rgba(255, 255, 255, 0.1)'};">
+          <div style="color: #888;">
+            <strong>代码:</strong> <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; color: ${isUnlocked ? '#a8b5ff' : '#666'};">${achievement.code}</code>
+          </div>
+        </div>
+        <div style="font-size: 11px; color: #666; margin-top: 5px;">
+          📍 ${achievement.trigger}
+        </div>
+      `;
+
+      grid.appendChild(card);
+    });
+  }
+
+  // 关闭说明书（内部函数）
+  function closeEasterEggManual() {
     modal.classList.remove('show');
     document.body.style.overflow = '';
-  };
+  }
 
   // 点击模态框背景关闭
   modal.addEventListener('click', function(e) {
@@ -489,30 +1741,24 @@
     }
   });
 
-  // 成功音效（可选，使用 Web Audio API）
-  function playSuccessSound() {
-    try {
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-
-      oscillator.frequency.value = 523.25; // C5
-      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 0.5);
-    } catch (e) {
-      // 如果音频失败，静默处理
-      console.log('Audio not supported');
+  // 初始化:检查是否已解锁,如果已解锁则显示菜单按钮
+  document.addEventListener('DOMContentLoaded', function() {
+    const isUnlocked = localStorage.getItem('secretManualUnlocked') === 'true';
+    const menuButton = document.getElementById('secret-menu-button');
+    if (isUnlocked && menuButton) {
+      menuButton.style.display = 'flex';
     }
-  }
 
-  // 添加一个小提示在控制台
-  console.log('%c🎮 试试输入隐藏密码！', 'font-size: 20px; color: #FFD700; font-weight: bold;');
-  console.log('%c提示: 这是我的名字拼音...', 'font-size: 16px; color: #667eea;');
+    // 绑定菜单按钮点击事件
+    if (menuButton) {
+      menuButton.addEventListener('click', openEasterEggManual);
+    }
+
+    // 绑定关闭按钮点击事件
+    const closeButton = document.querySelector('.easter-egg-close');
+    if (closeButton) {
+      closeButton.addEventListener('click', closeEasterEggManual);
+    }
+  });
 })();
 </script>

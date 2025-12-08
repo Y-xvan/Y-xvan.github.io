@@ -1,0 +1,821 @@
+<!-- 时间旅行者日记 - 隐藏彩蛋 -->
+<!-- 时间日记模态框 -->
+<div id="time-diary-modal" class="time-diary-modal">
+  <div class="time-diary-content">
+    <button class="diary-close">×</button>
+
+    <div class="diary-header">
+      <h2>⏰ Time Traveler's Diary</h2>
+      <p class="diary-subtitle">Your research journey through time</p>
+    </div>
+
+    <div class="diary-body">
+      <!-- 当前时间状态 -->
+      <div class="current-status-card">
+        <div class="status-time">
+          <div class="time-display" id="current-time">--:--:--</div>
+          <div class="timezone-display" id="timezone-info">Loading timezone...</div>
+        </div>
+
+        <div class="status-divider"></div>
+
+        <div class="status-message">
+          <div class="status-icon" id="status-icon">🌙</div>
+          <div class="status-text">
+            <h3 id="status-title">Research Status</h3>
+            <p id="status-description">Checking your current status...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 访问历史记录 -->
+      <div class="visit-history-section">
+        <h3 class="section-title">📖 Visit History</h3>
+        <div class="history-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="total-visits">0</div>
+            <div class="stat-label">Total Visits</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="night-owl-count">0</div>
+            <div class="stat-label">Night Owl 🦉</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="early-bird-count">0</div>
+            <div class="stat-label">Early Bird 🐦</div>
+          </div>
+        </div>
+
+        <!-- 时间热力图 -->
+        <div class="heatmap-section">
+          <h4 class="heatmap-title">Visit Heatmap</h4>
+          <div class="heatmap-grid" id="heatmap-grid"></div>
+          <div class="heatmap-legend">
+            <span>Less</span>
+            <div class="legend-colors">
+              <div class="legend-color" style="background: rgba(102, 126, 234, 0.2);"></div>
+              <div class="legend-color" style="background: rgba(102, 126, 234, 0.4);"></div>
+              <div class="legend-color" style="background: rgba(102, 126, 234, 0.6);"></div>
+              <div class="legend-color" style="background: rgba(102, 126, 234, 0.8);"></div>
+              <div class="legend-color" style="background: rgba(102, 126, 234, 1);"></div>
+            </div>
+            <span>More</span>
+          </div>
+        </div>
+
+        <!-- 最近访问记录 -->
+        <div class="recent-visits">
+          <h4 class="recent-title">Recent Visits</h4>
+          <div class="visit-list" id="visit-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* 模态框 */
+.time-diary-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  overflow-y: auto;
+  animation: modalFadeIn 0.3s ease;
+}
+
+.time-diary-modal.show {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.time-diary-content {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  max-width: 700px;
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  position: relative;
+  color: white;
+  animation: contentSlideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@keyframes contentSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.diary-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 28px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  line-height: 1;
+  z-index: 10;
+}
+
+.diary-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+.diary-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 30px;
+  border-radius: 20px 20px 0 0;
+  text-align: center;
+}
+
+.diary-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 800;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.diary-subtitle {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.diary-body {
+  padding: 30px;
+}
+
+/* 当前状态卡片 */
+.current-status-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 30px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.status-time {
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+.time-display {
+  font-size: 36px;
+  font-weight: 800;
+  color: #FFD700;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  margin-bottom: 5px;
+  font-family: 'Courier New', monospace;
+}
+
+.timezone-display {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+}
+
+.status-divider {
+  width: 2px;
+  height: 80px;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+}
+
+.status-message {
+  flex: 1;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.status-icon {
+  font-size: 48px;
+  animation: iconFloat 3s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.status-text h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #FFD700;
+}
+
+.status-text p {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.5;
+}
+
+/* 访问历史区域 */
+.visit-history-section {
+  margin-top: 20px;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  color: #fff;
+}
+
+.history-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat-item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 800;
+  color: #667eea;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+}
+
+/* 热力图 */
+.heatmap-section {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.heatmap-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 15px 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(24, 1fr);
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.heatmap-cell {
+  aspect-ratio: 1;
+  background: rgba(102, 126, 234, 0.2);
+  border-radius: 3px;
+  transition: all 0.2s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.2);
+  z-index: 10;
+}
+
+.heatmap-cell::after {
+  content: attr(data-hour);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  margin-bottom: 5px;
+}
+
+.heatmap-cell:hover::after {
+  opacity: 1;
+}
+
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.legend-colors {
+  display: flex;
+  gap: 3px;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+/* 最近访问 */
+.recent-visits {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.recent-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 15px 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.visit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.visit-item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.visit-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.visit-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.visit-details {
+  flex: 1;
+}
+
+.visit-time {
+  font-size: 13px;
+  font-weight: 600;
+  color: #FFD700;
+  margin-bottom: 3px;
+}
+
+.visit-status {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .time-diary-content {
+    max-width: 100%;
+    border-radius: 15px;
+  }
+
+  .diary-header {
+    padding: 20px;
+  }
+
+  .diary-header h2 {
+    font-size: 24px;
+  }
+
+  .diary-body {
+    padding: 20px;
+  }
+
+  .current-status-card {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .status-divider {
+    width: 100%;
+    height: 2px;
+  }
+
+  .history-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .heatmap-grid {
+    grid-template-columns: repeat(12, 1fr);
+  }
+}
+
+/* 滚动条样式 */
+.time-diary-content::-webkit-scrollbar,
+.visit-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.time-diary-content::-webkit-scrollbar-track,
+.visit-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.time-diary-content::-webkit-scrollbar-thumb,
+.visit-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.time-diary-content::-webkit-scrollbar-thumb:hover,
+.visit-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+</style>
+
+<script>
+(function() {
+  const modal = document.getElementById('time-diary-modal');
+  const secretCode = 'time';
+  let currentInput = '';
+  let lastKeyTime = Date.now();
+
+  // 时间段配置
+  const timeRanges = [
+    {
+      name: 'Late Night Coding',
+      hours: [0, 1, 2, 3, 4, 5],
+      icon: '🌙',
+      title: 'Night Owl Mode',
+      description: 'Still debugging at this hour? You are a true researcher! Remember to rest your eyes.',
+      type: 'night-owl'
+    },
+    {
+      name: 'Early Morning',
+      hours: [6, 7, 8],
+      icon: '🌅',
+      title: 'Early Bird',
+      description: 'Starting the day early! Fresh mind, fresh ideas. Time for coffee and new discoveries.',
+      type: 'early-bird'
+    },
+    {
+      name: 'Morning Work',
+      hours: [9, 10, 11],
+      icon: '☀️',
+      title: 'Productive Morning',
+      description: 'The golden hours for research! Your mind is sharp and ready to tackle complex problems.',
+      type: 'normal'
+    },
+    {
+      name: 'Lunch Break',
+      hours: [12, 13],
+      icon: '🍜',
+      title: 'Lunch Time',
+      description: 'Time to recharge! Even researchers need to eat. Enjoy your meal!',
+      type: 'normal'
+    },
+    {
+      name: 'Afternoon Session',
+      hours: [14, 15, 16, 17],
+      icon: '💻',
+      title: 'Afternoon Grind',
+      description: 'Keep pushing forward! This is when experiments start showing results.',
+      type: 'normal'
+    },
+    {
+      name: 'Evening',
+      hours: [18, 19],
+      icon: '🌆',
+      title: 'Evening Wind Down',
+      description: 'The day is wrapping up. Time to review your progress and plan for tomorrow.',
+      type: 'normal'
+    },
+    {
+      name: 'Night Time',
+      hours: [20, 21, 22, 23],
+      icon: '🌃',
+      title: 'Inspiration Hour',
+      description: 'Quiet evening, perfect for deep thinking. Some of the best ideas come at night.',
+      type: 'night-owl'
+    }
+  ];
+
+  // 获取用户时区和当前时间
+  function getUserTimeInfo() {
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const now = new Date();
+    const hour = now.getHours();
+
+    return { timezone, now, hour };
+  }
+
+  // 根据小时获取状态
+  function getStatusForHour(hour) {
+    for (const range of timeRanges) {
+      if (range.hours.includes(hour)) {
+        return range;
+      }
+    }
+    return timeRanges[0]; // 默认返回第一个
+  }
+
+  // 更新当前状态显示
+  function updateCurrentStatus() {
+    const { timezone, now, hour } = getUserTimeInfo();
+    const status = getStatusForHour(hour);
+
+    // 更新时间显示
+    const timeStr = now.toLocaleTimeString('en-US', {
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+    document.getElementById('current-time').textContent = timeStr;
+    document.getElementById('timezone-info').textContent = timezone;
+
+    // 更新状态
+    document.getElementById('status-icon').textContent = status.icon;
+    document.getElementById('status-title').textContent = status.title;
+    document.getElementById('status-description').textContent = status.description;
+  }
+
+  // 记录访问
+  function recordVisit() {
+    const { timezone, now, hour } = getUserTimeInfo();
+    const status = getStatusForHour(hour);
+
+    const visits = JSON.parse(localStorage.getItem('timeDiaryVisits') || '[]');
+
+    const visit = {
+      timestamp: now.toISOString(),
+      hour: hour,
+      timezone: timezone,
+      status: status.name,
+      icon: status.icon,
+      type: status.type
+    };
+
+    visits.unshift(visit);
+
+    // 只保留最近100次访问
+    if (visits.length > 100) {
+      visits.splice(100);
+    }
+
+    localStorage.setItem('timeDiaryVisits', JSON.stringify(visits));
+  }
+
+  // 获取访问统计
+  function getVisitStats() {
+    const visits = JSON.parse(localStorage.getItem('timeDiaryVisits') || '[]');
+
+    const nightOwlCount = visits.filter(v => v.type === 'night-owl').length;
+    const earlyBirdCount = visits.filter(v => v.type === 'early-bird').length;
+
+    // 统计每小时的访问次数
+    const hourCounts = Array(24).fill(0);
+    visits.forEach(v => {
+      hourCounts[v.hour]++;
+    });
+
+    return {
+      total: visits.length,
+      nightOwl: nightOwlCount,
+      earlyBird: earlyBirdCount,
+      hourCounts: hourCounts,
+      recentVisits: visits.slice(0, 10)
+    };
+  }
+
+  // 更新统计显示
+  function updateStats() {
+    const stats = getVisitStats();
+
+    document.getElementById('total-visits').textContent = stats.total;
+    document.getElementById('night-owl-count').textContent = stats.nightOwl;
+    document.getElementById('early-bird-count').textContent = stats.earlyBird;
+
+    // 更新热力图
+    updateHeatmap(stats.hourCounts);
+
+    // 更新最近访问列表
+    updateRecentVisits(stats.recentVisits);
+  }
+
+  // 更新热力图
+  function updateHeatmap(hourCounts) {
+    const grid = document.getElementById('heatmap-grid');
+    grid.innerHTML = '';
+
+    const maxCount = Math.max(...hourCounts, 1);
+
+    for (let hour = 0; hour < 24; hour++) {
+      const cell = document.createElement('div');
+      cell.className = 'heatmap-cell';
+
+      const count = hourCounts[hour];
+      const intensity = count / maxCount;
+
+      // 设置颜色强度
+      if (intensity > 0) {
+        cell.style.background = `rgba(102, 126, 234, ${0.2 + intensity * 0.8})`;
+      }
+
+      // 设置提示信息
+      const hourStr = hour.toString().padStart(2, '0') + ':00';
+      cell.setAttribute('data-hour', `${hourStr} (${count})`);
+
+      grid.appendChild(cell);
+    }
+  }
+
+  // 更新最近访问列表
+  function updateRecentVisits(visits) {
+    const list = document.getElementById('visit-list');
+    list.innerHTML = '';
+
+    if (visits.length === 0) {
+      list.innerHTML = '<div style="text-align: center; color: rgba(255, 255, 255, 0.5); padding: 20px;">No visit history yet</div>';
+      return;
+    }
+
+    visits.forEach(visit => {
+      const item = document.createElement('div');
+      item.className = 'visit-item';
+
+      const visitDate = new Date(visit.timestamp);
+      const timeStr = visitDate.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
+
+      item.innerHTML = `
+        <div class="visit-icon">${visit.icon}</div>
+        <div class="visit-details">
+          <div class="visit-time">${timeStr}</div>
+          <div class="visit-status">${visit.status}</div>
+        </div>
+      `;
+
+      list.appendChild(item);
+    });
+  }
+
+  // 打开模态框
+  function openTimeDiary() {
+    // 检查是否已解锁
+    const timeDiaryUnlocked = localStorage.getItem('timeDiaryUnlocked') === 'true';
+    if (!timeDiaryUnlocked) {
+      // 第一次打开时解锁
+      if (typeof window.unlockTimeDiary === 'function') {
+        window.unlockTimeDiary();
+      }
+    }
+
+    updateCurrentStatus();
+    updateStats();
+    modal.classList.add('show');
+
+    // 每秒更新时间
+    if (window.timeDiaryInterval) {
+      clearInterval(window.timeDiaryInterval);
+    }
+    window.timeDiaryInterval = setInterval(updateCurrentStatus, 1000);
+  }
+
+  // 关闭模态框（内部函数）
+  function closeTimeDiary() {
+    modal.classList.remove('show');
+    if (window.timeDiaryInterval) {
+      clearInterval(window.timeDiaryInterval);
+      window.timeDiaryInterval = null;
+    }
+  }
+
+  // 监听键盘输入密码
+  document.addEventListener('keydown', function(e) {
+    const key = e.key;
+    const now = Date.now();
+
+    // 如果模态框已打开，不监听密码
+    if (modal.classList.contains('show')) {
+      return;
+    }
+
+    // 如果超过2秒没有输入，重置
+    if (now - lastKeyTime > 2000) {
+      currentInput = '';
+    }
+    lastKeyTime = now;
+
+    // 只接受字母
+    if (/^[a-z]$/i.test(key)) {
+      currentInput += key.toLowerCase();
+
+      // 只保留最近输入的字符（与密码长度相同）
+      if (currentInput.length > secretCode.length) {
+        currentInput = currentInput.slice(-secretCode.length);
+      }
+
+      // 检查是否匹配密码
+      if (currentInput === secretCode) {
+        openTimeDiary();
+        currentInput = ''; // 重置
+      }
+    }
+  });
+
+  // 点击背景关闭
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+      closeTimeDiary();
+    }
+  });
+
+  // ESC 键关闭
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modal.classList.contains('show')) {
+      closeTimeDiary();
+    }
+  });
+
+  // 页面加载时记录访问
+  document.addEventListener('DOMContentLoaded', function() {
+    recordVisit();
+
+    // 绑定关闭按钮点击事件
+    const closeButton = document.querySelector('.diary-close');
+    if (closeButton) {
+      closeButton.addEventListener('click', closeTimeDiary);
+    }
+  });
+})();
+</script>
