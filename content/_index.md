@@ -22,6 +22,7 @@ sections:
         size: large
         shape: circle
   - block: markdown
+    id: research
     content:
       title: 'My Research'
       subtitle: ''

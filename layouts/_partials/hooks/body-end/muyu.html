@@ -1,5 +1,5 @@
-<!-- 功德计数器组件 -->
-<div id="muyu-container">
+<!-- 功德计数器组件 - 初始隐藏，解锁后显示 -->
+<div id="muyu-container" style="display: none;">
   <div id="muyu-widget">
     <div id="merit-counter"><span id="merit-count">0</span></div>
   </div>
@@ -136,6 +136,7 @@
 
 <script>
 let meritCount = 0;
+
 const meritPhrases = [
   '功德+1 ✨',
   '顶刊预定！🚀',
@@ -192,6 +193,11 @@ function knockAvatar(event) {
 
   // 显示随机功德文字（在头像位置）
   showMeritTextAtAvatar(event);
+
+  // 调用解锁系统增加点击次数
+  if (typeof window.incrementMuyuClicks === 'function') {
+    window.incrementMuyuClicks();
+  }
 }
 
 function showMeritTextAtAvatar(event) {
