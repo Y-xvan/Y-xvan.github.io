@@ -135,7 +135,7 @@
 </style>
 
 <script>
-let meritCount = 0;
+let globalMeritCount = 0; // 全局功德值（所有用户的总和）
 
 const meritPhrases = [
   '功德+1 ✨',
@@ -160,11 +160,41 @@ const meritPhrases = [
   '方向明确 🧭'
 ];
 
-// 从 localStorage 读取功德值
-if (localStorage.getItem('meritCount')) {
-  meritCount = parseInt(localStorage.getItem('meritCount'));
-  document.getElementById('merit-count').textContent = meritCount;
+// CountAPI 配置 - 用于全局计数
+const COUNTAPI_NAMESPACE = 'y-xvan';
+const COUNTAPI_KEY = 'muyu-merit-total';
+
+// 从 CountAPI 获取全局功德值
+async function loadGlobalMeritCount() {
+  try {
+    const response = await fetch(`https://api.countapi.xyz/get/${COUNTAPI_NAMESPACE}/${COUNTAPI_KEY}`);
+    const data = await response.json();
+    if (data.value !== undefined) {
+      globalMeritCount = data.value;
+      updateMeritDisplay();
+    }
+  } catch (error) {
+    console.log('Failed to load global merit count:', error);
+    // 如果加载失败，显示本地备份值
+    const localBackup = localStorage.getItem('globalMeritBackup');
+    if (localBackup) {
+      globalMeritCount = parseInt(localBackup);
+      updateMeritDisplay();
+    }
+  }
 }
+
+// 更新显示
+function updateMeritDisplay() {
+  const meritCountEl = document.getElementById('merit-count');
+  if (meritCountEl) {
+    // 使用千位分隔符格式化数字，让大数字更易读
+    meritCountEl.textContent = globalMeritCount.toLocaleString();
+  }
+}
+
+// 页面加载时获取全局计数
+loadGlobalMeritCount();
 
 // 等待 DOM 加载完成后绑定头像点击事件
 document.addEventListener('DOMContentLoaded', function() {
@@ -183,20 +213,33 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-function knockAvatar(event) {
-  // 增加功德值
-  meritCount++;
-  document.getElementById('merit-count').textContent = meritCount;
-
-  // 保存到 localStorage
-  localStorage.setItem('meritCount', meritCount);
+async function knockAvatar(event) {
+  // 乐观更新：立即增加显示的功德值
+  globalMeritCount++;
+  updateMeritDisplay();
 
   // 显示随机功德文字（在头像位置）
   showMeritTextAtAvatar(event);
 
-  // 调用解锁系统增加点击次数
+  // 调用解锁系统增加个人点击次数（用于成就解锁）
   if (typeof window.incrementMuyuClicks === 'function') {
     window.incrementMuyuClicks();
+  }
+
+  // 异步更新全局计数到服务器
+  try {
+    const response = await fetch(`https://api.countapi.xyz/hit/${COUNTAPI_NAMESPACE}/${COUNTAPI_KEY}`);
+    const data = await response.json();
+    if (data.value !== undefined) {
+      globalMeritCount = data.value;
+      updateMeritDisplay();
+      // 保存备份到 localStorage
+      localStorage.setItem('globalMeritBackup', globalMeritCount);
+    }
+  } catch (error) {
+    console.log('Failed to update global merit count:', error);
+    // 如果更新失败，保存本地备份
+    localStorage.setItem('globalMeritBackup', globalMeritCount);
   }
 }
 
