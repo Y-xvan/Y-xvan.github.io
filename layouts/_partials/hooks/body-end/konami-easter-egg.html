@@ -1645,11 +1645,12 @@
       creatorCodesSection.style.display = 'block';
     }
 
-    // 从 localStorage 读取创作者代码配置（只保留3个）
+    // 从 localStorage 读取创作者代码配置
     const CREATOR_CODE_ACHIEVEMENTS = [
       { id: 'konami_code', icon: '🎮', title: '经典密码', titleEn: 'Konami Code', desc: '发现了经典的Konami Code', code: '↑↓↑↓←→←→', trigger: '输入方向键序列' },
       { id: 'developer_mode', icon: '👨‍💻', title: '开发者模式', titleEn: 'Developer Mode', desc: '解锁了所有隐藏功能', code: 'yuzhixuan', trigger: '键入开发者密码' },
-      { id: 'clear_cache', icon: '🧹', title: '重置大师', titleEn: 'Cache Cleaner', desc: '清除了所有缓存数据', code: 'clearcache', trigger: '键入清除密码' }
+      { id: 'clear_cache', icon: '🧹', title: '重置大师', titleEn: 'Cache Cleaner', desc: '清除了所有缓存数据', code: 'clearcache', trigger: '键入清除密码' },
+      { id: 'console_master', icon: '🔧', title: '控制台大师', titleEn: 'Console Master', desc: '使用开发者工具调试功德值', code: 'window.setMuyuClicks(n)', trigger: '在控制台调用函数' }
     ];
 
     const unlockedCreatorCodes = JSON.parse(localStorage.getItem('unlockedCreatorCodes') || '[]');
