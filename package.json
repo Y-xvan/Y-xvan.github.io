@@ -9,6 +9,7 @@
     "build": "hugo --minify"
   },
   "dependencies": {
+    "@netlify/blobs": "10.0.10",
     "@tailwindcss/typography": "^0.5.10",
     "preact": "^10.27.2",
     "tailwindcss": "^4.1.12"

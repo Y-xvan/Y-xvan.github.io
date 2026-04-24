@@ -20,6 +20,9 @@
   """
   publish = "public"
 
+[functions]
+  directory = "netlify/functions"
+
 [build.environment]
   HUGO_VERSION = "0.152.2"
   GO_VERSION = "1.21.5"

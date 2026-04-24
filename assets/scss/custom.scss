@@ -170,3 +170,13 @@ footer {
 .hbb-interests li[data-link]:hover::after {
   opacity: 1 !important;
 }
+
+/* Give the homepage papers block enough width for horizontal cards */
+#papers .container {
+  max-width: 1100px !important;
+}
+
+#papers .grid,
+#papers .paper-card {
+  width: 100%;
+}

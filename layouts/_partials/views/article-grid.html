@@ -1,0 +1,59 @@
+{{ $item := .item }}
+
+{{ if eq $item.Section "papers" }}
+  {{ $link := $item.RelPermalink }}
+  {{ $target := "" }}
+  {{ with $item.Params.links }}
+    {{ $first := index . 0 }}
+    {{ with index $first "url" }}
+      {{ $link = . }}
+      {{ $target = "target=\"_blank\" rel=\"noopener\"" }}
+    {{ end }}
+  {{ else }}
+    {{ with $item.Params.external_link }}
+      {{ $link = . }}
+      {{ $target = "target=\"_blank\" rel=\"noopener\"" }}
+    {{ end }}
+  {{ end }}
+
+  {{ $siteName := site.Params.hugoblox.identity.name | default "Zhixuan Yu" }}
+  {{ $summary := $item.Params.summary | default ((partial "functions/get_summary" $item) | plainify | htmlUnescape) }}
+
+  <div class="paper-card group rounded-[28px] border border-slate-200/80 bg-white/92 shadow-[0_18px_60px_rgba(37,99,235,0.08)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(37,99,235,0.14)]">
+    <div class="flex flex-col justify-between gap-5 p-6 md:p-8">
+      <div class="space-y-4">
+        <div class="flex flex-wrap items-center gap-3 text-sm">
+          {{ with $item.Params.publication }}
+            <span class="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 font-semibold text-blue-700 ring-1 ring-blue-200">
+              {{ . }}
+            </span>
+          {{ end }}
+          {{ with $item.Params.publication_year }}
+            <span class="text-slate-500">{{ . }}</span>
+          {{ end }}
+        </div>
+
+        <h3 class="text-2xl font-extrabold leading-tight text-slate-900 md:text-[1.9rem]">
+          <a href="{{ $link }}" {{ $target | safeHTMLAttr }} class="transition-colors hover:text-blue-700">
+            {{ $item.Title }}
+          </a>
+        </h3>
+
+        {{ with $item.Params.authors }}
+          <p class="text-[0.98rem] leading-7 text-slate-700">
+            {{ range $index, $author := . }}
+              {{ if gt $index 0 }}, {{ end }}
+              {{ if eq $author $siteName }}<strong>{{ $author }}</strong>{{ else }}{{ $author }}{{ end }}
+            {{ end }}
+          </p>
+        {{ end }}
+
+        <p class="max-w-3xl text-base leading-7 text-slate-600">
+          {{ $summary }}
+        </p>
+      </div>
+    </div>
+  </div>
+{{ else }}
+  {{- partial "views/card.html" . -}}
+{{ end }}

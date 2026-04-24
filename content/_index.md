@@ -21,15 +21,6 @@ sections:
       avatar:
         size: large
         shape: circle
-  - block: markdown
-    id: research
-    content:
-      title: 'My Research'
-      subtitle: ''
-      text: |-
-        Feel free to reach out for collaboration opportunities!
-    design:
-      columns: '1'
   - block: collection
     id: papers
     content:
@@ -41,5 +32,6 @@ sections:
           - papers
         exclude_featured: false
     design:
+      view: article-grid
       columns: '1'
 ---
