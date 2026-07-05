@@ -40,6 +40,10 @@ profiles:
     url: https://github.com/Y-xvan
     label: GitHub Page
 
+  - icon: academicons/cv
+    url: /files/cv.pdf
+    label: CV
+
 
 interests:
   - Graph Learning
