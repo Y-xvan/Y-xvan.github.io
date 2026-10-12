@@ -25,7 +25,7 @@ links:
     url: "https://arxiv.org/pdf/2606.09323v1"
   - name: Code and Data
     url: "https://github.com/LOGO-CUHKSZ/TRL-Bench"
-publication: "arXiv"
+publication: "Under review at NeurIPS 2026"
 publication_year: 2026
 image:
   focal_point: "Center"

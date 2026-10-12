@@ -35,6 +35,13 @@ profiles:
     url: 'mailto:124090828@link.cuhk.edu.cn'
     label: 124090828@link.cuhk.edu.cn
 
+  - icon: brands/weixin
+    url: 'weixin://dl/chat?Yx_519ctg'
+    label: 'WeChat: Yx_519ctg'
+
+  - icon: phone
+    url: 'tel:+8613646629354'
+    label: 'Phone: +86 136 4662 9354'
 
   - icon: brands/github
     url: https://github.com/Y-xvan
